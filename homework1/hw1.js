@@ -22,14 +22,33 @@ if (str.indexOf(".html") === str.length - 5 && str.indexOf("http://") === 0) {
 // 1-7 пн-вс
 
 const week = ['0', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье',];
+let day = 3;
 
-function dayWeek(num) { }
+switch (day) {
+    case 1:
+        console.log('Понедельник');
+        break;
+    case 2:
+        console.log('Вторник');
+        break;
+    case 3:
+        console.log('Среда');
+        break;
+    case 4:
+        console.log('Четверг');
+        break;
+    case 5:
+        console.log('Пятница');
+        break;
+    case 6:
+        console.log('Суббота');
+        break;
+    case 7:
+        console.log('Воскресенье');
+        break;
 
-const day = week.find((item, index, array) =>  {
-    return index > 0 && index < 8
-});
-
-
-dayWeek(5);
-console.log(day);
-
+    default:
+        console.log('Не день недели');
+        break;
+}
+  
