@@ -1,32 +1,27 @@
-const number = document.getElementById('input');
-const get = document.querySelector('.get');
-const clear = document.querySelector('.clear');
-const for_result = document.getElementById('for_result');
+import { initializeApp } from "firebase/app";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
-let todos = [];
+import { FIREBASE_CONFIG } from "./src/api/api-config";
+import './style.scss';
 
-fetch('https://jsonplaceholder.typicode.com/todos')
-  .then(response => response.json())
-  .then(result => {
-      todos = result;
-      });
+const app = initializeApp(FIREBASE_CONFIG);
+const auth = getAuth();
 
-get.onclick = render = () => {
-    const todo = todos.find(item => item.id == number.value);
-    const title = document.createElement('p');
-    const id = document.createElement('p');
-    const progress = document.createElement('p');
+let mail = document.getElementById('mail');
+let password = document.getElementById('password');
+let sign = document.getElementById('sign');
 
-    title.innerText = 'Title: ' + todo.title;
-    id.innerText = 'Id: ' + todo.id;
-    progress.innerText = todo.completed ? 
-        'Completed' : 'In progress';
-    
-    for_result.append(title);
-    for_result.append(id);
-    for_result.append(progress);
-}
 
-clear.onclick = reverse = () => {
-    for_result.innerHTML = '';
-}
+sign.onclick = () => createUserWithEmailAndPassword(auth, mail.value, password.value)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user);
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+    console.log(error);
+  });
