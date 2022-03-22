@@ -7,4 +7,4 @@ export const FIREBASE_CONFIG = {
     appId: "1:617179100706:web:361a999cf849c2592dbc7b"
 }
 
-
+export const DB_URL = 'https://ffproj-27971-default-rtdb.firebaseio.com';

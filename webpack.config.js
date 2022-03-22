@@ -9,8 +9,12 @@ module.exports = {
     },
     plugins: [
         new HTMLWebpackPlugin({
-            filename: './index.html',
+            filename: 'index.html',
             template: './index.html'
+        }),
+        new HTMLWebpackPlugin({
+            filename: 'sign-in.html',
+            template: 'src/components/sign-in/sign-in.html'
         }),
     ],
     module: {
