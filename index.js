@@ -92,6 +92,7 @@ import './src/styles/style.scss';
 
 import { PATHNAMES, ROUTES } from './src/shared/constants/routes.js';
 import { signInHandler } from './src/components/sign-in/sign-in.js';
+import { getToken } from './src/shared/services/local-storage-service';
 
 window.onload = () => {
     const pathname = window.location.pathname;
@@ -102,6 +103,9 @@ window.onload = () => {
             break;
         case PATHNAMES.sign_in:
             signInHandler();
+            break;
+        case PATHNAMES.main:
+            !getToken() ? window.location.href = ROUTES.sign_in : null;
             break;
         default:
             break;

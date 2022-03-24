@@ -16,6 +16,10 @@ module.exports = {
             filename: 'sign-in.html',
             template: 'src/components/sign-in/sign-in.html'
         }),
+        new HTMLWebpackPlugin({
+            filename: 'main.html',
+            template: 'src/components/main/main.html'
+        }),
     ],
     module: {
         rules: [
