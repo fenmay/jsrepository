@@ -20,6 +20,10 @@ module.exports = {
             filename: 'main.html',
             template: 'src/components/main/main.html'
         }),
+        new HTMLWebpackPlugin({
+            filename: 'sign-up.html',
+            template: 'src/components/sign-up/sign-up.html'
+        }),
     ],
     module: {
         rules: [
