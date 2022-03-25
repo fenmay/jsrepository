@@ -1,3 +1,4 @@
+import moment from 'moment';
 import './src/styles/style.scss';
 
 // Это часы работы ресторана
@@ -5,6 +6,15 @@ import './src/styles/style.scss';
 // И метод будем определять, сможете ли вы сделать заказ или нет. 
 // Учитывайте тот факт, что за пол часа до закрытия или 
 // перерыва заказ не может быть оформлен. Ну типа кухня закрывается
+
+const day = document.getElementById('day');
+const hours = document.getElementById('hours');
+const minutes = document.getElementById('minutes');
+const tryBtn = document.getElementById('try');
+const clear = document.getElementById('clear');
+const for_result = document.getElementById('for_result');
+const can = document.createElement('p');
+const cannot = document.createElement('p');
 
 const openingHours = {
     dayOfWeek: ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY'],
@@ -82,37 +92,29 @@ const openingHours = {
     ]
   };
 
-const newDay = openingHours.dayOfWeek;
-const monThur = openingHours.periods[0];
-const fri = openingHours.periods[4];
+// массив дней пн-чт
+const baseDays = openingHours.dayOfWeek.slice(0, 4);
 
-console.log(newDay);
-console.log(monThur);
-console.log(fri);
+can.innerText = 'You can make an order';
+cannot.innerText = 'You cannot make an order. Choose another time';
 
-let arrTime = [];
+const baseTime = tryBtn.onclick = () => {
+  moment().hours(hours.value).minutes(minutes.value) > moment().hours(10).minutes(0) && moment().hours(hours.value).minutes(minutes.value) < moment().hours(13).minutes(30) ?
+    for_result.append(can) : moment().hours(hours.value).minutes(minutes.value) > moment().hours(15).minutes(0) && moment().hours(hours.value).minutes(minutes.value) < moment().hours(17).minutes(30) ?
+      for_result.append(can) : moment().hours(hours.value).minutes(minutes.value) > moment().hours(18).minutes(30) && moment().hours(hours.value).minutes(minutes.value) < moment().hours(21).minutes(30) ?
+        for_result.append(can) : for_result.append(cannot);
+}
 
-const fourDays = Object.values(monThur);
-const strDays = Object.values(fourDays[0]) + ' ' + Object.values(fourDays[1]) + ' ' + Object.values(fourDays[2]);
-const newTimes = strDays.split(',').join();
-// const omg = newTimes.split('');
-// .join(' ');
-// .split(' ');
-console.log(newTimes);
+const fridayTime = tryBtn.onclick = () => {
+  moment().hours(hours.value).minutes(minutes.value) > moment().hours(8).minutes(0) && moment().hours(hours.value).minutes(minutes.value) < moment().hours(11).minutes(30) ?
+    for_result.append(can) : moment().hours(hours.value).minutes(minutes.value) > moment().hours(13).minutes(0) && moment().hours(hours.value).minutes(minutes.value) < moment().hours(18).minutes(30) ?
+      for_result.append(can) : moment().hours(hours.value).minutes(minutes.value) > moment().hours(19).minutes(30) && moment().hours(hours.value).minutes(minutes.value) < moment().hours(23).minutes(0) ?
+        for_result.append(can) : for_result.append(cannot);
+}
 
-// let slicedHours = [];
-// for (let index = 0; index < newTimes.length; index++) {
-//     slicedHours = slicedHours + newTimes[index].slice(0, 2).split(',');
-    
-// }
-// console.log(slicedHours);
+baseDays.includes(day.value.toUpperCase(), 0) ?
+baseTime() : fridayTime();
 
-// let goodTimes = slicedHours.split('');
-// console.log(goodTimes);
-// for (let index = 0; index < finallyFourDays.length; index++) {
-//     arrTime.push(finallyFourDays[index])
-    
-// }
-// console.log(arrTime);
-
-
+clear.onclick = () => {
+  for_result.innerHTML = '';
+}
