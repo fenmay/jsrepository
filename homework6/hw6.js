@@ -7,39 +7,29 @@ const title = document.createElement('p');
 const id = document.createElement('p');
 const progress = document.createElement('p');
 const deleteTodo = document.createElement('button');
-
-let todos = [];
-
+const end = +number.value + 30;
 
 
-    for (let index = +number.value; index < (+number.value + 30); index++) {
-        number = +number.value;
-        get.onclick = () => {
-        
-            fetch(`https://jsonplaceholder.typicode.com/todos/${number}`)
-            .then(response => response.json())
-            .then(result => {
-                todos = result;
-                console.log(todos);
-        
-                title.innerText = 'TITLE: ' + todos.title + '; ';
+    
+get.onclick = () => {
+    let todos = [];
+
+    for (index = +number.value; index < end; index++) {
+        fetch(`https://jsonplaceholder.typicode.com/todos/${index}`)
+        .then(response => response.json())
+        .then(result => {
+            todos = result;
+            console.log(todos);
+                
+            title.innerText = 'TITLE: ' + todos.title + '; ';
             id.innerText = 'ID: ' + todos.id + '; ';
             progress.innerText = todos.completed ? 
                 'STATE: Completed' : 'STATE: In progress';
             deleteTodo.className = 'delete_todo';
             deleteTodo.innerText = 'Delete Todo';
-            
-            for_result.append(title, id, progress, deleteTodo);
-                });
-        
-        // number = +number.value + 1;
-        console.log(number);        
+        });
+        for_result.append(title, id, progress, deleteTodo);
     }
-    
-
-    
-    
-    
 }
 
 clear_res.onclick = () => {
