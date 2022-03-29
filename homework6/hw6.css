@@ -16,7 +16,7 @@
 button {
     margin-top: 10px;
     height: 35px;
-    width: 12vw;
+    width: 10vw;
     font-size: inherit;
     border-radius: 5px;
 }
@@ -43,12 +43,13 @@ input {
 }
 
 #for_result {
-    width: 50vw;
+    width: 80vw;
     margin-top: 20px;
-    margin-left: 30vw;
+    margin-left: 10vw;
     font-size: 17px;
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
     height: fit-content;
 }
 
@@ -59,4 +60,17 @@ p {
 .delete_todo {
     background-color: rgb(231, 147, 107);
     margin-left: 10px;
+    margin-bottom: 5px;
+    position: absolute;
+    bottom: 10px;
+}
+
+.finish {
+    border: black 1px dashed;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 5px;
+    height: 240px;
+    width: 15%;
+    position: relative;
 }
