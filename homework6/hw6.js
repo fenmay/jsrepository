@@ -20,6 +20,10 @@ get.onclick = () => {
             deleteTodo.className = 'delete_todo';
             deleteTodo.innerText = 'Delete Todo';
         });
+
+        index > 200 ?
+            finish.innerHTML = '' : null
+            
         const title = document.createElement('p');
         const id = document.createElement('p');
         const progress = document.createElement('p');
