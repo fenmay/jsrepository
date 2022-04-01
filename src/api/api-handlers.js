@@ -18,7 +18,7 @@ export const createUserDataRequest = user => {
     return fetch(
         `${DB_URL}/users.json`,
         {
-            method: POST,
+            method: 'POST',
             body: JSON.stringify(user)
         }
     );
