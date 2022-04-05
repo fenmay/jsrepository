@@ -45,7 +45,7 @@ import './src/styles/style.scss';
 
 // // createTodo();
 
-// const getTodo = () => {
+// const getTodo = () => { 
 //   fetch(`${DB_URL}/todos.json`)
 //   .then(res => res.json())
 //   .then(response => {

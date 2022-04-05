@@ -1,4 +1,13 @@
-import { createUserAuthRequest, createUserDataRequest } from '../../api/api-handlers';
+import { 
+    signInRequest,
+    createUserAuthRequest, 
+    createUserDataRequest,
+    getUser
+} from '../../api/api-handlers';
+
+import { setToken, setUser } from '../../shared/services/local-storage-service';
+import { ROUTES } from '../../shared/constants/routes';
+
 
 export const signUpHandler = () => {
     const firstNameInput = document.getElementById('firstNameInput');
@@ -48,11 +57,21 @@ export const signUpHandler = () => {
     }
 
     signUpBtn.onclick = async () => {
+        const { email, password_1: password } = userData;
+        let authId = '';
+        let userId = '';
+
         await createUserAuthRequest(userData)
-            .then(response => console.log(response));
-        await createUserDataRequest(userData)
-            .then(res => res.json())
-            .then(res => console.log(res))
+            .then(response => authId = response.user.uid);
+        await createUserDataRequest({...userData, authId})
+            .then(res =>  userId = res.name);
+        await signInRequest({email, password})
+            .then(({ user: { accessToken }}) => setToken(accessToken))
+            .catch(err => console.log('Invalid credentials'));
+        await getUser(userId).then((res) => {
+            window.location.href = ROUTES.main
+            setUser(res);
+        });
     }
 
     const checkFormValid = () => {
