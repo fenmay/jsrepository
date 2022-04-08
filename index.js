@@ -93,24 +93,19 @@ import './src/styles/style.scss';
 import { PATHNAMES, ROUTES } from './src/shared/constants/routes.js';
 import { signInHandler } from './src/components/sign-in/sign-in.js';
 import { signUpHandler } from './src/components/sign-up/sign-up'
-import { getToken } from './src/shared/services/local-storage-service';
+import { getToken, getUser } from './src/shared/services/local-storage-service';
+
+const routerMap = new Map([
+    [PATHNAMES.home, () =>  window.location.href = ROUTES.sign_in],
+    [PATHNAMES.sign_in, () => signInHandler()],
+    [PATHNAMES.sign_up, () => signUpHandler()],
+    [PATHNAMES.main, () => {
+        !getToken() && !getUser() ? window.location.href = ROUTES.sign_in : null;
+    }],
+]);
 
 window.onload = () => {
     const pathname = window.location.pathname;
 
-    switch (pathname) {
-        case PATHNAMES.home:
-            window.location.href = ROUTES.sign_in;
-            break;
-        case PATHNAMES.sign_in:
-            signInHandler();
-            break;
-        case PATHNAMES.main:
-            !getToken() ? window.location.href = ROUTES.sign_in : null;
-            break;
-        case PATHNAMES.sign_up:
-            signUpHandler();
-        default:
-            break;
-    }
+    routerMap.get(pathname)();
 }
