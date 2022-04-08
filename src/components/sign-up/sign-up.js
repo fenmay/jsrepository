@@ -2,7 +2,8 @@ import {
     signInRequest,
     createUserAuthRequest, 
     createUserDataRequest,
-    getUser
+    getUser,
+    getUsers
 } from '../../api/api-handlers';
 
 import { setToken, setUser } from '../../shared/services/local-storage-service';
@@ -56,7 +57,7 @@ export const signUpHandler = () => {
     }
 
     signUpBtn.onclick = async () => {
-        const { email, password_1: password } = userData;
+        const { email, password: password_1 } = userData;
         let authId = '';
         let userId = '';
 
@@ -64,12 +65,12 @@ export const signUpHandler = () => {
             .then(response => authId = response.user.uid);
         await createUserDataRequest({...userData, authId})
             .then(res =>  userId = res.name);
-        await signInRequest({email, password})
+        await signInRequest({email, password: password_1})
             .then(({ user: { accessToken }}) => setToken(accessToken))
             .catch(err => console.log('Invalid credentials'));
         await getUser(userId).then((res) => {
-            window.location.href = ROUTES.main
             setUser(res);
+            window.location.href = ROUTES.main
         });
     }
 

@@ -1,6 +1,7 @@
-import { signInRequest, getUser } from '../../api/api-handlers';
+import { signInRequest, getUsers } from '../../api/api-handlers';
 import { ROUTES } from '../../shared/constants/routes';
 import { setToken, setUser } from '../../shared/services/local-storage-service';
+import { getToken } from '../../shared/services/local-storage-service';
 
 export const signInHandler = () => {
     const signInBtn = document.getElementById('sign-in-btn');
