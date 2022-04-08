@@ -21,5 +21,13 @@ export const createUserDataRequest = user => {
             method: 'POST',
             body: JSON.stringify(user)
         }
-    );
+    ).then(res => res.json());
+}
+
+export const getUsers = () => {
+    return fetch( `${DB_URL}/users.json`).then(response => response.json());
+}
+
+export const getUser = id => {
+    return fetch (`${DB_URL}/users/${id}.json`).then(response => response.json())
 }
