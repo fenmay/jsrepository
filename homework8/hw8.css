@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+}
+
+.container {
+    width: 40vw;
+    margin: 40px auto;
+}
+
+.enterNumbers {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chooseAction {
+    margin-top: 10px;
+}
+
+#firstNumber,
+label {
+    margin-right: 10px;
+}
+
+input,
+select {
+    padding-left: 5px;
+    width: 100px;
+    height: 25px;
+    background-color: #fff;
+    border: black 1px solid;
+    border-radius: 5px;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+button {
+    margin: 20px auto;
+    height: 30px;
+    width: 150px;
+    font-size: inherit;
+    border-radius: 5px;
+}
+
+button:hover {
+    color: #fff;
+}
+
+#calculate {
+    background-color: rgb(105, 204, 113);
+}
+
+#clear {
+    background-color: rgb(194, 129, 129);
+}
+
+#result {
+    width: 90vw;
+    margin: 20px 5vw;
+    font-size: 25px;
+    text-align: center;
+}
