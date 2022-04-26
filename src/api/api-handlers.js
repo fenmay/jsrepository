@@ -30,7 +30,9 @@ export const getUsers = () => {
 };
 
 export const getUser = (id) => {
-  return fetch(`${DB_URL}/users/${id}.json`).then((response) =>
-    response.json()
-  );
+  return fetch(`${DB_URL}/users/${id}.json`).then((response) => response.json());
 };
+
+export const getTodos = () => {
+  return fetch(`${DB_URL}/todos.json`).then(response => response.json());
+}

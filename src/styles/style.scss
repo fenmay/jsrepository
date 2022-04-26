@@ -1,8 +1,10 @@
 @import './colors.scss';
+@import './mixins.scss';
 
 @import '../components/sign-in/sign-in.scss';
 @import '../components/sign-up/sign-up.scss';
 @import '../components/main/main.scss';
+@import '../components/todo/todo.scss';
 
 body {
     margin: 0;
