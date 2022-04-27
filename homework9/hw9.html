@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./hw9.css">
+        <title>Homework 9</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="first_task">
+                <div>
+                    1. Create class Student that extends class User. Get name and surname of Student, find out what year is this student.
+                </div>
+                <div class="enter_info">
+                    <div class="fields">
+                        <label for="name">Enter student's name:</label>
+                        <input id="name" type="text">
+                    </div>
+                    <div class="fields">
+                        <label for="surname">Enter student's surname:</label>
+                        <input id="surname" type="text">
+                    </div>
+                    <div class="fields">
+                        <label for="year">Enter year of admission:</label>
+                        <input id="year" type="number">
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button id="get_info">Get Info</button>
+                    <button id="clear">Clear Result</button>
+                </div>
+                <div id="result"></div>
+            </div>
+            
+            <div class="second_task">
+                <div>
+                    2. Create several objects containing fields like First name, Last name, Salary, Job (contains Company, Position), join them to another Object and show full information about choosen object
+                </div>
+                <div class="choose_object">
+                    <label for="choose_object">Choose an object:</label>
+                    <select id="choose_object">
+                        <option value="noValue">- Select one -</option>
+                        <option value="first">First Object</option>
+                        <option value="second">Second Object</option>
+                        <option value="third">Third Object</option>
+                    </select>
+                </div>
+                <div class="buttons">
+                    <button id="get_obj">Get Info</button>
+                    <button id="clear_obj">Clear Result</button>
+                </div>
+                <div id="obj_result"></div>
+            </div>
+        </div>
+        <script type="module" src="./hw9.js"></script>
+    </body>
+</html>
