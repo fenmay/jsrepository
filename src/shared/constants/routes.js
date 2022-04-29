@@ -10,5 +10,6 @@ export const ROUTES = {
     home: '/',
     sign_in: 'sign-in.html',
     main: 'main.html',
-    sign_up: 'sign-up.html'
+    sign_up: 'sign-up.html',
+    find_users: 'find-users.html'
 }
