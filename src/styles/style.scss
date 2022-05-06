@@ -12,3 +12,13 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.invalid-input {
+    border: red 2px solid;
+}
+
+.invalid-input-message {
+    color: red;
+    text-align: left !important;
+    display: none;
+}

@@ -8,6 +8,7 @@ import {
 
 import { setToken, setUser } from '../../shared/services/local-storage-service';
 import { ROUTES } from '../../shared/constants/routes';
+import { emailValidator, showErrorMessage } from '../../shared/validators';
 
 export const signUpHandler = () => {
     const firstNameInput = document.getElementById('firstNameInput');
@@ -41,9 +42,16 @@ export const signUpHandler = () => {
         checkFormValid();
     }
 
-    emailInput.oninput = () => {
-        userData.email = emailInput.value;
-        checkFormValid();
+    // emailInput.oninput = () => {
+    //     userData.email = emailInput.value;
+    //     checkFormValid();
+    // }
+
+    emailInput.onblur = () => {
+        if (!emailValidator(emailInput.value)) {
+            emailInput.classList.add('invalid-input');
+            showErrorMessage('email');
+        } else emailInput.classList.remove('invalid-input');
     }
 
     passInput1.oninput = () => {
@@ -78,9 +86,7 @@ export const signUpHandler = () => {
         const isFormValid = Object.values(userData).every(value => !!value);
         const isPasswordEqual = userData.password_1 === userData.password_2;
 
-        console.log(isPasswordEqual);
-        
-        isFormValid ?
+        isFormValid && isPasswordEqual ?
             signUpBtn.removeAttribute('disabled') : 
             signUpBtn.setAttribute('disabled', true);
         }
