@@ -1,11 +1,10 @@
-h1 {
-    margin-left: 35vw;
-    
-}
-
 .sign-up {
     margin: 30px auto;
     width: 80%;
+
+    h1 {
+        text-align: center;
+    }
 
     &__btn {
         display: block;
@@ -15,7 +14,7 @@ h1 {
     }
 
     div {
-        margin: 40px 0;
+        margin: 40px auto;
     }
 }
 

@@ -13,27 +13,33 @@
             <div class="sign-in">
                 <div class="form-floating">
                     <input  id="firstNameInput" class="form-control">
+                    <p class="invalid-input-message" id="firstNameInputError">Test text</p>
                     <label for="firstNameInput">First name</label>
                 </div>
                 <div class="form-floating">
                     <input  id="lastNameInput" class="form-control">
+                    <p class="invalid-input-message" id="lastNameInputError">Test text</p>
                     <label for="lastNameInput">Last name</label>
                 </div>
                 <div class="form-floating">
                     <input  id="birthInput" type="date" class="form-control">
+                    <p class="invalid-input-message" id="birthInputError">Test text</p>
                     <label for="birthInput">Birth</label>
                 </div>
                 <div class="form-floating">
                     <input  id="emailInput" type="email" class="form-control">
                     <p class="invalid-input-message" id="emailInputError">Test text</p>
+                    <p class="invalid-input-message" id="requiredEmailInputError"></p>
                     <label for="emailInput">Email address</label>
                 </div>
                 <div class="form-floating">
                     <input id="passInput1" class="form-control">
+                    <p class="invalid-input-message" id="passInputError_1">Test text</p>
                     <label for="passInput1">Password</label>
                 </div>
                 <div class="form-floating">
                     <input id="passInput2" class="form-control">
+                    <p class="invalid-input-message" id="passInputError_2">Test text</p>
                     <label for="passInput2">Repeat Password</label>
                 </div>
                 <button id="signUpBtn" disabled type="button" class="btn btn-primary sign-up__btn">Sign Up</button>

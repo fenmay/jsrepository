@@ -1,11 +1,10 @@
-h1 {
-    margin-left: 45vw;
-    
-}
-
 .sign-in {
     margin: 30px auto;
     width: 80%;
+
+    h1 {
+        text-align: center;
+    }
 
     &__btn {
         display: block;
