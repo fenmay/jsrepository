@@ -5,12 +5,12 @@ import {
     getUser,
     getUsers
 } from '../../api/api-handlers';
-
 import { setToken, setUser } from '../../shared/services/local-storage-service';
 import { ROUTES } from '../../shared/constants/routes';
 import { emailValidator, showErrorMessage, hideErrorMessage } from '../../shared/validators';
 import { Spinner } from '../../shared/spinner';
 import { errorTagsIds } from '../../shared/validators';
+import { showNotification } from '../../shared/notifications';
 
 export const signUpHandler = () => {
     const firstNameInput = document.getElementById('firstNameInput');
@@ -134,28 +134,52 @@ export const signUpHandler = () => {
 
     signUpBtn.onclick = async () => {
         const { email, password: password_1 } = userData;
+        let requestCount = 0;
         let authId = '';
         let userId = '';
 
         Spinner.showSpinner();
         await createUserAuthRequest(userData)
-            .then(response => authId = response.user.uid)
-            .catch(error => Spinner.hideSpinner());
+            .then(response => {
+                authId = response.user.uid;
+                requestCount++;
+            })
+            .catch(error => {
+                Spinner.hideSpinner();
+                showNotification(error.message);
+            });
         await createUserDataRequest({...userData, authId})
-            .then(res => userId = res.name)
-            .catch(error => Spinner.hideSpinner());
+            .then(res => {
+                userId = res.name;
+                requestCount++;
+            })
+            .catch(error => {
+                Spinner.hideSpinner();
+                showNotification(error.message);
+            });
         await signInRequest({email, password: password_1})
             .then(({ user: { accessToken }}) =>  {
                 setToken(accessToken);
+                requestCount++;
+            })
+            .catch(error => {
+                Spinner.hideSpinner();
+                showNotification(error.message);
+            });
+        await getUser(userId)
+            .then((res) => {
+                setUser(res);
+                requestCount++;
                 Spinner.hideSpinner();
             })
-            .catch(error => Spinner.hideSpinner());
-        await getUser(userId).then((res) => {
-            setUser(res);
-            window.location.href = ROUTES.main;
+        .catch(error => {
             Spinner.hideSpinner();
-        })
-        .catch(error => Spinner.hideSpinner());
+            showNotification(error.message);
+        });
+
+        if (requestCount === 4) {
+            window.location.href = ROUTES.main;
+        }
     }
 
     const checkFormValid = () => {

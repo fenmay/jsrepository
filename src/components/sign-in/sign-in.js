@@ -3,6 +3,7 @@ import { ROUTES } from '../../shared/constants/routes';
 import { setToken, setUser } from '../../shared/services/local-storage-service';
 import { getToken } from '../../shared/services/local-storage-service';
 import { Spinner } from '../../shared/spinner';
+import { showNotification } from '../../shared/notifications';
 import { 
     emailValidator, 
     showErrorMessage, 
@@ -60,14 +61,19 @@ export const signInHandler = () => {
 
     signInBtn.onclick = async () => {
         let userId = '';
+        let requestCount = 0;
 
         Spinner.showSpinner();
         await signInRequest(userData)
             .then(({ user: { accessToken, uid }}) => {
                 setToken(accessToken);
                 userId = uid;
+                requestCount++;
             })
-            .catch(err => Spinner.hideSpinner());
+            .catch(err => {
+                Spinner.hideSpinner();
+                showNotification(error.message);
+            });
         await getUsers()
             .then(response => {
                 const users = 
@@ -75,11 +81,18 @@ export const signInHandler = () => {
                     .map(userId => ({ ...response[userId], userId }));
                 const user = users.find(user => user.authId === userId);
                 
+                requestCount++;
                 setUser(user);
                 Spinner.hideSpinner();
-                window.location.href = ROUTES.main; 
             })
-            .catch(err => Spinner.hideSpinner());
+            .catch(err => {
+                Spinner.hideSpinner();
+                showNotification(error.message);
+            });
+
+            if (requestCounter === 2) {
+                window.location.href = ROUTES.main; 
+            }
     }
 
     const checkFormValid = () => {

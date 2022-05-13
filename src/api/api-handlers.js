@@ -36,3 +36,13 @@ export const getUser = (id) => {
 export const getTodos = () => {
   return fetch(`${DB_URL}/todos.json`).then(response => response.json());
 }
+
+export const createTodo = todo => {
+  return fetch(
+    `${DB_URL}/todos.json`,
+    {
+      method: 'POST',
+      body: JSON.stringify(todo)
+    }
+  ).then(response => response.json());
+}

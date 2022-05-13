@@ -8,3 +8,5 @@ export const FIREBASE_CONFIG = {
 }
 
 export const DB_URL = 'https://ffproj-27971-default-rtdb.firebaseio.com';
+
+Object.freeze(FIREBASE_CONFIG);

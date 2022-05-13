@@ -24,8 +24,8 @@ body {
 }
 
 .spinner {
-    width: 100vw;
-    height: 100vh;
+    @include flex(row, center, center);
+    @include size(100vw, 100vh);
     position: absolute;
     z-index: 99999;
     background-color: #00000063;
@@ -34,12 +34,30 @@ body {
     justify-content: center;
 
     .spinner-border {
-        width: 10rem;
-        height: 10rem;
+        @include size(10rem, 10rem);
     }    
 }
 
-.spinner-border {
-    width: 10rem;
-    height: 10rem;
+.notification {
+    // @include size(250px, 100px);
+    @include flex(row, center, center);
+    width: 250px;
+    padding: 5px;
+    position: absolute;
+    z-index: 999999;
+    bottom: 10px;
+    right: 10px;
+    color: white;
+
+    p {
+        font-size: 24px;
+    }
+
+    &.error {
+        background-color: $warning;
+    }
+
+    &.success {
+        background-color: $green;
+    }
 }
