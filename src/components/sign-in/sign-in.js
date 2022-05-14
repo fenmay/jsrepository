@@ -90,7 +90,7 @@ export const signInHandler = () => {
                 showNotification(error.message);
             });
 
-            if (requestCounter === 2) {
+            if (requestCount === 2) {
                 window.location.href = ROUTES.main; 
             }
     }

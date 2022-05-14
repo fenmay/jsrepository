@@ -133,7 +133,7 @@ export const signUpHandler = () => {
     }
 
     signUpBtn.onclick = async () => {
-        const { email, password: password_1 } = userData;
+        const { email, password_1: password } = userData;
         let requestCount = 0;
         let authId = '';
         let userId = '';
@@ -157,7 +157,7 @@ export const signUpHandler = () => {
                 Spinner.hideSpinner();
                 showNotification(error.message);
             });
-        await signInRequest({email, password: password_1})
+        await signInRequest({email, password})
             .then(({ user: { accessToken }}) =>  {
                 setToken(accessToken);
                 requestCount++;

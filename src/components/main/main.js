@@ -27,9 +27,9 @@ export const mainPageHandler = async () => {
       todos = Object.keys(todosArr).map(key => {
         const todo = {id: key, ...todosArr[key]};
         
-        if (todo.userId === id) {
-          todoWrapper.append(new Todo(todo).getTodo());
-        }
+        if (todo.UserId === id) {
+          todoWrapper.append(new Todo(todo).getTodo());        
+        } 
         
         return todo;
       });
@@ -74,10 +74,10 @@ export const mainPageHandler = async () => {
         showNotification(error.message);
       });
       await getTodos()
-        .then(todosArr => {
-          Spinner.hideSpinner();
-          renderTodos(todosArr);
-      })
+      .then(todosArr => {
+        Spinner.hideSpinner();
+        renderTodos(todosArr);
+    })
       .catch(error => {
         Spinner.hideSpinner();
         showNotification(error.message);
