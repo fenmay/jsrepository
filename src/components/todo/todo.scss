@@ -3,4 +3,17 @@
     @include border (1px, solid, black, 10px);
     margin: 1rem auto;
     padding: 1rem;
+    position: relative;
+
+    i {
+        position: absolute;
+        right: 25px;
+        bottom: 30px;
+        font-size: 30px;
+        cursor: pointer;
+
+        &:hover {
+            color: $primary;
+        }
+    }
 }

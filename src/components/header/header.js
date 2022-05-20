@@ -5,6 +5,7 @@ export class Header {
     constructor() {}
 
     static getHeader(place) {
+      if (Object.values(getUser()).length) {
         const { firstName, lastName, email } = getUser();
         const header = document.createElement('div');
         const headerLogo = document.createElement('div');
@@ -38,13 +39,19 @@ export class Header {
         place.prepend(header); 
 
         headerLogOut.onclick = () => {
-            clearUser();
-            clearToken();
-            window.location.href = ROUTES.sign_in;
+            this.logout();
           };
 
         headerFindUser.onclick = () => {
           window.location.href = ROUTES.find_users;
         };
+      } else this.logout();
+        
+    }
+
+    static logout() {
+      clearUser();
+      clearToken();
+      window.location.href = ROUTES.sign_in;
     }
 }

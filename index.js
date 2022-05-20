@@ -97,7 +97,11 @@ import { getToken, getUser } from './src/shared/services/local-storage-service';
 import { mainPageHandler } from './src/components/main/main';
 
 const routerMap = new Map([
-    [PATHNAMES.home, () =>  window.location.href = ROUTES.sign_in],
+    [PATHNAMES.home, () =>  {
+        getToken() && Object.values(getUser()).length ?
+            window.location.href = ROUTES.main :
+            window.location.href = ROUTES.sign_in
+    }],
     [PATHNAMES.sign_in, () => signInHandler()],
     [PATHNAMES.sign_up, () => signUpHandler()],
     [PATHNAMES.main, () => {

@@ -46,3 +46,13 @@ export const createTodo = todo => {
     }
   ).then(response => response.json());
 }
+
+export const updateTodo = (todo, id) => {
+  return fetch(
+    `${DB_URL}/todos/${id}.json`,
+    {
+      method: 'PUT',
+      body: JSON.stringify(todo)
+    }
+  ).then(response => response.json());
+}

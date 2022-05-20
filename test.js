@@ -7,6 +7,8 @@
 //     }
 // }
 
+import { fn } from "moment";
+
 // // console.log(user.name);
 // user.sayHello()
 
@@ -71,36 +73,48 @@
 
 
 //Н А С Л Е Д О В А Н И Е
-class Pets {
-    constructor(name, age) {
-        this.name = name;
-        this.age = age;
-    }
-}
+// class Pets {
+//     constructor(name, age) {
+//         this.name = name;
+//         this.age = age;
+//     }
+// }
 
-class Dog extends Pets { //Dog наследуется от Pets
+// class Dog extends Pets { //Dog наследуется от Pets
     
-    constructor(name, age) {
-        super(name, age); //какие значения у родителя - у Pets
-    }
+//     constructor(name, age) {
+//         super(name, age); //какие значения у родителя - у Pets
+//     }
 
-    sayGau() {
-        console.log(`Gau gau, ${this.name}, ${this.age}`);
-    }
+//     sayGau() {
+//         console.log(`Gau gau, ${this.name}, ${this.age}`);
+//     }
+// }
+
+// class Cat extends Pets { //Cat наследуется от Pets
+//     constructor(name, age) {
+//         super(name, age); //какие значения у родителя - у Pets
+//     }
+
+//     sayMeow() {
+//         console.log(`Meow meow, ${this.name}, ${this.age}`);
+//     }
+// }
+
+// const murzik = new Cat('Murzik', 5); //созд. кота с именем Мурзик возрастом 5
+// const bobik = new Dog('Bobik', 10); //созд. пса с именем Бобик и возрастом 10
+
+// murzik.sayMeow(); //Meow meow, Murzik, 5
+// bobik.sayGau(); //Gau gau, Bobik, 10
+
+
+const first = (x) => {
+    console.log('first', x);
 }
 
-class Cat extends Pets { //Cat наследуется от Pets
-    constructor(name, age) {
-        super(name, age); //какие значения у родителя - у Pets
-    }
-
-    sayMeow() {
-        console.log(`Meow meow, ${this.name}, ${this.age}`);
-    }
+const second = fn => {
+    console.log('second');
+    fn(23);
 }
 
-const murzik = new Cat('Murzik', 5); //созд. кота с именем Мурзик возрастом 5
-const bobik = new Dog('Bobik', 10); //созд. пса с именем Бобик и возрастом 10
-
-murzik.sayMeow(); //Meow meow, Murzik, 5
-bobik.sayGau(); //Gau gau, Bobik, 10
+second(first);
