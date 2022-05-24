@@ -56,3 +56,12 @@ export const updateTodo = (todo, id) => {
     }
   ).then(response => response.json());
 }
+
+export const deleteTodo = id => {
+  return fetch(
+    `${DB_URL}/todos/${id}.json`,
+    {
+      method: 'DELETE'
+    }
+  ).then(response => response.json());
+}

@@ -1,5 +1,7 @@
 import { getUser, clearUser, clearToken } from '../../shared/services/local-storage-service';
 import { ROUTES } from '../../shared/constants/routes';
+import { Modal } from '../../shared/modal';
+import { MODAL_MESSAGES } from '../../shared/constants/modal-messages';
 
 export class Header {
     constructor() {}
@@ -39,7 +41,7 @@ export class Header {
         place.prepend(header); 
 
         headerLogOut.onclick = () => {
-            this.logout();
+            new Modal (MODAL_MESSAGES.logout, this.logout).showModal();
           };
 
         headerFindUser.onclick = () => {

@@ -2,9 +2,11 @@ import { getTodos } from '../../api/api-handlers';
 import { Todo } from '../todo/todo';
 import { Header } from '../header/header';
 import { Spinner } from '../../shared/spinner';
-import { createTodo, updateTodo } from '../../api/api-handlers';
+import { createTodo, updateTodo, deleteTodo } from '../../api/api-handlers';
 import { showNotification } from '../../shared/notifications';
 import { getUser } from '../../shared/services/local-storage-service';
+import { Modal } from '../../shared/modal';
+import { MODAL_MESSAGES } from '../../shared/constants/modal-messages';
 
 export const mainPageHandler = async () => {
   const mainPage = document.querySelector('.main');
@@ -22,6 +24,7 @@ export const mainPageHandler = async () => {
   let todos = [];
   let isEditMode = false;
   let editingTodoId = '';
+  let deletingTodoId = '';
 
   const clearForm = () => {
     newTodo.title = ''
@@ -30,7 +33,7 @@ export const mainPageHandler = async () => {
     description.value = null;
   }
 
-  const iconClickHandler = todoId => {
+  const editTodoHandler = todoId => {
     const findingTodo = todos.find(({id}) => id === todoId);
 
     editingTodoId = todoId;
@@ -44,6 +47,33 @@ export const mainPageHandler = async () => {
     checkIsFormValid();
   };
 
+  const deleteSelectedTodo = async () => {
+    Spinner.showSpinner();
+    await deleteTodo(deletingTodoId)
+      .then(res => {
+        Spinner.hideSpinner();
+      })
+      .catch(error => {
+        Spinner.hideSpinner();
+        showNotification(error.message);
+      });
+    await getTodos()
+      .then(todosArr => {
+        Spinner.hideSpinner();
+        renderTodos(todosArr);
+      })
+      .catch(error => {
+        Spinner.hideSpinner();
+        showNotification(error.message);
+      });
+  }
+
+  const deleteTodoHandler = async todoId => {
+    deletingTodoId = todoId;
+    new Modal(MODAL_MESSAGES.deleteTodo, deleteSelectedTodo).showModal();
+    
+  }
+
   const renderTodos = todosArr => {
     if (todosArr) {
       const id = getUser().authId;
@@ -54,7 +84,7 @@ export const mainPageHandler = async () => {
         const todo = {id: key, ...todosArr[key]};
         
         if (todo.UserId === id) {
-          todoWrapper.append(new Todo(todo, iconClickHandler).getTodo());        
+          todoWrapper.append(new Todo(todo, editTodoHandler, deleteTodoHandler).getTodo());        
         } 
         
         return todo;

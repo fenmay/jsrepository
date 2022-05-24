@@ -1,4 +1,4 @@
-@mixin flex($direction, $align_items, $justify_content: center) {
+@mixin flex($direction: row, $align_items: center, $justify_content: center) {
     display: flex;
     flex-direction: $direction;
     align-items: $align_items;
@@ -6,7 +6,7 @@
 }
 
 @mixin size($width: 100%, $height: inherit, $min_height: inherit) {
-    width: $width;
+    width: $width !important;
     height: $height;
     min-height: $min_height;
 }
