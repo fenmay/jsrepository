@@ -2,15 +2,20 @@ export class Todo {
     #id;
     #description;
     #title;
+    #isComplete;
+
     #editFn;
     #deleteFn;
+    #setIsComplete;
 
-    constructor({ id, description, title }, editFn, deleteFn) {
+    constructor({ id, description, title, isComplete }, editFn, deleteFn, setIsComplete) {
         this.#id = id;
         this.#description = description;
         this.#title = title;
         this.#editFn = editFn;
         this.#deleteFn = deleteFn;
+        this.#setIsComplete = setIsComplete;
+        this.#isComplete = isComplete;
     }
 
     getTodo() {
@@ -35,6 +40,15 @@ export class Todo {
         title.innerText = this.#title;
         description.innerText = this.#description;
         togglerLabel.innerText = 'Set TODO as complited';
+
+        if (this.#isComplete) {
+            toggler.setAttribute('checked', true);
+            todoWrapper.classList.add('active');
+        } else {
+            toggler.removeAttribute('checked');
+        }
+
+        toggler.onclick = event => this.#setIsComplete(event.target.checked, this.#id);
 
         togglerWrapper.append(toggler, togglerLabel);
 

@@ -95,6 +95,7 @@ import { signInHandler } from './src/components/sign-in/sign-in.js';
 import { signUpHandler } from './src/components/sign-up/sign-up'
 import { getToken, getUser } from './src/shared/services/local-storage-service';
 import { mainPageHandler } from './src/components/main/main';
+import { findUsersHandler } from './src/components/find-users/find-users';
 
 const routerMap = new Map([
     [PATHNAMES.home, () =>  {
@@ -103,6 +104,7 @@ const routerMap = new Map([
             window.location.href = ROUTES.sign_in
     }],
     [PATHNAMES.sign_in, () => signInHandler()],
+    [PATHNAMES.find_users, () => findUsersHandler()],
     [PATHNAMES.sign_up, () => signUpHandler()],
     [PATHNAMES.main, () => {
         !getToken() && !getUser() ? window.location.href = ROUTES.sign_in : mainPageHandler();

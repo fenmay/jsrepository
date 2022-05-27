@@ -1,42 +1,48 @@
-.header {
-    @include flex(row, center, space-between);
-    height: 100px;
-    background-color: $primary;
-    padding: 30px;
-
-    &__logo {
-        color: #fff;
-        font-size: 30px;
+.find_users {
+    .form-floating {
+        width: 95%;
+        margin: 30px auto;
     }
 
-    &__user {
-        @include flex(row, center);
+    &__header {
+        @include flex();
 
-        &__photo {
-            @include size(50px, 50px);
-        border-radius: 50%;
-        background-color: #fff;
-        }
-
-        &__info {
-            @include flex(column, center);
-            margin-right: 20px;
+        &__first-name, 
+        &__last-name, 
+        &__email,
+        &__id{
+            @include size(20%, 50px);
 
             p {
-                color: #fff;
-                font-weight: bold;
-                margin: 0;
+                text-align: center;
+                cursor: pointer;
+            }
 
-                &:first-child {
-                    text-decoration: underline;
+            div {
+                @include border(1px, solid, black);
+                @include flex();
+                height: 50px;
+
+                p {
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0;
                 }
             }
         }
-    }
 
-    button {
-        border-radius: 10px;
-        padding: 10px;
-        margin-left: 15px;
-        }
+        // div div {
+        //     @include size(20%, 50px);
+        //     @include border(1px, solid, black);
+        //     @include flex();
+        //     display: inline-block;
+
+        //     p {
+        //         font-weight: bold;
+        //         text-align: center;
+        //         margin: 0;
+        //     }
+
+        // }
+    }
 }

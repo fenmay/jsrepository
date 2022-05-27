@@ -11,7 +11,7 @@
     min-height: $min_height;
 }
 
-@mixin border($height, $type, $color, $radius) {
+@mixin border($height, $type, $color, $radius: 0) {
     border: $height $type $color;
     border-radius: $radius;
 }

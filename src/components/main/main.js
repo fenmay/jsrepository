@@ -34,7 +34,7 @@ export const mainPageHandler = async () => {
   }
 
   const editTodoHandler = todoId => {
-    const findingTodo = todos.find(({id}) => id === todoId);
+    // const findingTodo = todos.find(({id}) => id === todoId);
 
     editingTodoId = todoId;
     cancelBtn.style.display = 'inline';
@@ -71,8 +71,13 @@ export const mainPageHandler = async () => {
   const deleteTodoHandler = async todoId => {
     deletingTodoId = todoId;
     new Modal(MODAL_MESSAGES.deleteTodo, deleteSelectedTodo).showModal();
-    
   }
+
+const setIsComplete = (isComplete, todoId) => {
+  const findingTodo = todos.find(todo => todo.id === todoId);
+
+  updateCurrentTodo({...findingTodo, isComplete}, todoId);
+}
 
   const renderTodos = todosArr => {
     if (todosArr) {
@@ -84,7 +89,13 @@ export const mainPageHandler = async () => {
         const todo = {id: key, ...todosArr[key]};
         
         if (todo.UserId === id) {
-          todoWrapper.append(new Todo(todo, editTodoHandler, deleteTodoHandler).getTodo());        
+          todoWrapper.append(
+            new Todo(
+              todo, 
+              editTodoHandler, 
+              deleteTodoHandler,
+              setIsComplete
+              ).getTodo());        
         } 
         
         return todo;
@@ -97,7 +108,7 @@ export const mainPageHandler = async () => {
 
   const createNewTodo = async () => {
     Spinner.showSpinner();
-    await createTodo({...newTodo, date: new Date(), UserId: getUser().authId})
+    await createTodo({...newTodo, date: new Date(), UserId: getUser().authId, isComplete: false})
     .then(response => {
       Spinner.hideSpinner();
       clearForm();
@@ -117,9 +128,9 @@ export const mainPageHandler = async () => {
     });
   }
 
-  const updateCurrentTodo = async () => {
+  const updateCurrentTodo = async (todo, id) => {
     Spinner.showSpinner();
-    await updateTodo({...newTodo, date: new Date(), UserId: getUser().authId}, editingTodoId)
+    await updateTodo(todo, id)
       .then(response => {
         clearForm();
       })
@@ -149,7 +160,9 @@ export const mainPageHandler = async () => {
   }
 
   submitBtn.onclick = async () => {
-    isEditMode ? updateCurrentTodo() : createNewTodo();
+    isEditMode ? 
+      updateCurrentTodo({...newTodo, date: new Date(), UserId: getUser().authId}, editingTodoId) : 
+      createNewTodo();
   }
 
   cancelBtn.onclick = () => {
