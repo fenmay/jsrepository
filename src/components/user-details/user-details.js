@@ -14,7 +14,7 @@ export const userDetailsHandler = async () => {
     const photoWrapper = document.querySelector('.user-details__info__photo');
 
     const renderTodos = todosObj => {
-        const userId = getCurrentUserData().authId;
+        const authId = getCurrentUserData().authId;
         const todos = 
             Object.keys(todosObj)
             .map(key => ({id: key, ...todosObj[key]}))
