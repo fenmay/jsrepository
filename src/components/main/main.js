@@ -34,7 +34,7 @@ export const mainPageHandler = async () => {
   }
 
   const editTodoHandler = todoId => {
-    // const findingTodo = todos.find(({id}) => id === todoId);
+    const findingTodo = todos.find(({id}) => id === todoId);
 
     editingTodoId = todoId;
     cancelBtn.style.display = 'inline';
