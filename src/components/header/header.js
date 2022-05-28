@@ -33,6 +33,10 @@ export class Header {
         headerFindUser.innerText = 'FIND USERS';
         headerLogOut.innerText = 'LOG OUT';
 
+        headerTitle.onclick = () => {
+          window.location.href = ROUTES.main;
+        }
+
         headerLogo.append(headerTitle);
         headerUser.append(headerUserInfo, headerUserPhoto, headerButtons);
         headerUserInfo.append(headerUserName, headerUserEmail);

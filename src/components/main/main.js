@@ -76,6 +76,7 @@ export const mainPageHandler = async () => {
 const setIsComplete = (isComplete, todoId) => {
   const findingTodo = todos.find(todo => todo.id === todoId);
 
+  delete findingTodo.id;
   updateCurrentTodo({...findingTodo, isComplete}, todoId);
 }
 

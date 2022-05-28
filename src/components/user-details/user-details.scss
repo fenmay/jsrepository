@@ -1,0 +1,43 @@
+.user-details {
+    display: none;
+
+    &__info {
+        @include flex(row, center, space-around);
+        padding: 15px;
+
+        &__photo {
+            @include size(300px, 300px);
+            @include border(2px, solid, $primary, 10px);
+            overflow: hidden;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        &__data {
+            @include size(40%, 300px);
+            margin-left: 20px;
+            padding: 15px;
+
+            div {
+                font-size: 20px;
+
+                span {
+
+                    &:first-child {
+                        font-weight: bold;
+                        text-decoration: underline;
+                    }               
+                }
+            }
+        }
+    }
+
+    &__todos {
+        @include size(90%);
+        @include border(1px, solid, $primary, 5px);
+        margin: 20px auto;
+        padding: 10px;
+    }
+}

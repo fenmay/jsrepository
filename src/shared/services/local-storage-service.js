@@ -9,3 +9,7 @@ export const getUser = () => JSON.parse(localStorage.getItem('user')) || {};
 export const clearUser = () => localStorage.removeItem('user');
 
 export const clearToken = () => localStorage.removeItem('accessToken');
+
+export const setCurrentUserData = data => localStorage.setItem('currentUserData', JSON.stringify(data));
+
+export const getCurrentUserData = () => JSON.parse(localStorage.getItem('currentUserData'));

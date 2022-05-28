@@ -1,6 +1,8 @@
 import { Header } from "../header/header";
 import { getUsers } from "../../api/api-handlers";
 import { Spinner } from '../../shared/spinner';
+import { ROUTES } from "../../shared/constants/routes";
+import { setCurrentUserData } from "../../shared/services/local-storage-service";
 
 
 export const findUsersHandler = async () => {
@@ -12,17 +14,18 @@ export const findUsersHandler = async () => {
     const id_table = document.querySelector('.find_users__header__id');
     const search = document.getElementById('search');
     let users = [];
-    
+
     const renderUsers = (users) => {
         const table_data_tags = document.querySelectorAll('.table-data');
 
         table_data_tags.forEach(tag => tag.remove());
         
-        users.forEach(({firstName, lastName, email, userId}) => {
+        users.forEach(({firstName, lastName, email, userId, authId}) => {
             const firstNameValue = document.createElement('p');
             const lastNameValue = document.createElement('p');
             const emailValue = document.createElement('p');
             const idValue = document.createElement('p');
+            const tags_array = [firstNameValue, lastNameValue, emailValue, idValue];
 
             firstNameValue.className = 'table-data';
             lastNameValue.className = 'table-data';
@@ -34,11 +37,17 @@ export const findUsersHandler = async () => {
             emailValue.innerText = email;
             idValue.innerText = userId;
 
+            tags_array.forEach(tag => {
+                tag.onclick = () => {
+                    setCurrentUserData({ userId, authId });
+                    window.location.href = ROUTES.user_details;
+                }
+            })
+
             first_name_table.append(firstNameValue);
             last_name_table.append(lastNameValue);
             email_table.append(emailValue);
             id_table.append(idValue);
-
         });
     }
 

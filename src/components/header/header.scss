@@ -7,6 +7,10 @@
     &__logo {
         color: #fff;
         font-size: 30px;
+
+        div {
+            cursor: pointer;
+        }
     }
 
     &__user {
