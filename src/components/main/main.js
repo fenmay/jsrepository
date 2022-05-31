@@ -4,7 +4,7 @@ import { Header } from '../header/header';
 import { Spinner } from '../../shared/spinner';
 import { createTodo, updateTodo, deleteTodo } from '../../api/api-handlers';
 import { showNotification } from '../../shared/notifications';
-import { getUser } from '../../shared/services/local-storage-service';
+import { getUserLocal } from '../../shared/services/local-storage-service';
 import { Modal } from '../../shared/modal';
 import { MODAL_MESSAGES } from '../../shared/constants/modal-messages';
 
@@ -82,7 +82,7 @@ const setIsComplete = (isComplete, todoId) => {
 
   const renderTodos = todosArr => {
     if (todosArr) {
-      const id = getUser().authId;
+      const id = getUserLocal().authId;
       
       todos = [];
       todoWrapper.innerHTML = null;
@@ -101,7 +101,7 @@ const setIsComplete = (isComplete, todoId) => {
         
         return todo;
       });
-    } 
+    } else todoWrapper.innerHTML = null;
   }
 
   const checkIsFormValid = () => Object.values(newTodo).every(value => !!value) ?
@@ -109,7 +109,15 @@ const setIsComplete = (isComplete, todoId) => {
 
   const createNewTodo = async () => {
     Spinner.showSpinner();
-    await createTodo({...newTodo, date: new Date(), UserId: getUser().authId, isComplete: false})
+    await createTodo(
+      {
+        ...newTodo, 
+        date: new Date(), 
+        UserId: getUserLocal().authId, 
+        isComplete: false,
+        comments: []
+      }
+    )
     .then(response => {
       Spinner.hideSpinner();
       clearForm();
@@ -161,9 +169,12 @@ const setIsComplete = (isComplete, todoId) => {
   }
 
   submitBtn.onclick = async () => {
-    isEditMode ? 
-      updateCurrentTodo({...newTodo, date: new Date(), UserId: getUser().authId}, editingTodoId) : 
-      createNewTodo();
+    if (isEditMode) {
+      const findingTodo = todos.find(todo => todo.id === editingTodoId);
+      const todoToRequest = {...findingTodo, ...newTodo, date: new Date(), UserId: getUserLocal().authId};
+      updateCurrentTodo(todoToRequest, editingTodoId);
+    } else createNewTodo();
+   
   }
 
   cancelBtn.onclick = () => {

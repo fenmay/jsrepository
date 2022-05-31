@@ -1,6 +1,6 @@
 import { signInRequest, getUsers } from '../../api/api-handlers';
 import { ROUTES } from '../../shared/constants/routes';
-import { setToken, setUser } from '../../shared/services/local-storage-service';
+import { setToken, setUserLocal } from '../../shared/services/local-storage-service';
 import { getToken } from '../../shared/services/local-storage-service';
 import { Spinner } from '../../shared/spinner';
 import { showNotification } from '../../shared/notifications';
@@ -82,7 +82,7 @@ export const signInHandler = () => {
                 const user = users.find(user => user.authId === userId);
                 
                 requestCount++;
-                setUser(user);
+                setUserLocal(user);
                 Spinner.hideSpinner();
             })
             .catch(err => {

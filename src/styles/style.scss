@@ -87,6 +87,8 @@ display: none;
 
 .toggler {
 
+    transform: translateY(-20px);
+
     input {
         @include size(50px, 25px);
     }

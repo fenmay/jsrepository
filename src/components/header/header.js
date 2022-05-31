@@ -1,4 +1,4 @@
-import { getUser, clearUser, clearToken } from '../../shared/services/local-storage-service';
+import { getUserLocal, clearLocalStorage } from '../../shared/services/local-storage-service';
 import { ROUTES } from '../../shared/constants/routes';
 import { Modal } from '../../shared/modal';
 import { MODAL_MESSAGES } from '../../shared/constants/modal-messages';
@@ -7,8 +7,8 @@ export class Header {
     constructor() {}
 
     static getHeader(place) {
-      if (Object.values(getUser()).length) {
-        const { firstName, lastName, email } = getUser();
+      if (Object.values(getUserLocal()).length) {
+        const { firstName, lastName, email } = getUserLocal();
         const header = document.createElement('div');
         const headerLogo = document.createElement('div');
         const headerTitle = document.createElement('div');
@@ -56,8 +56,7 @@ export class Header {
     }
 
     static logout() {
-      clearUser();
-      clearToken();
+      clearLocalStorage();
       window.location.href = ROUTES.sign_in;
     }
 }

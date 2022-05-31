@@ -4,10 +4,9 @@ import {
     signInRequest,
     createUserAuthRequest, 
     createUserDataRequest,
-    getUser,
-    getUsers
+    getUser
 } from '../../api/api-handlers';
-import { setToken, setUser } from '../../shared/services/local-storage-service';
+import { setToken, setUserLocal } from '../../shared/services/local-storage-service';
 import { ROUTES } from '../../shared/constants/routes';
 import { emailValidator, showErrorMessage, hideErrorMessage } from '../../shared/validators';
 import { Spinner } from '../../shared/spinner';
@@ -136,6 +135,7 @@ export const signUpHandler = () => {
 
     signUpBtn.onclick = async () => {
         const { email, password_1: password } = userData;
+        
         let requestCount = 0;
         let authId = '';
         let userId = '';
@@ -170,7 +170,7 @@ export const signUpHandler = () => {
             });
         await getUser(userId)
             .then((res) => {
-                setUser(res);
+                setUserLocal(res);
                 requestCount++;
                 Spinner.hideSpinner();
             })

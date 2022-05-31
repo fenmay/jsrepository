@@ -5,6 +5,11 @@
     padding: 1rem;
     position: relative;
 
+    p {
+        margin-bottom: 15px;
+        word-wrap: break-word;
+    }
+
     i {
         position: absolute;
         right: 25px;

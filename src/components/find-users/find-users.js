@@ -2,8 +2,8 @@ import { Header } from "../header/header";
 import { getUsers } from "../../api/api-handlers";
 import { Spinner } from '../../shared/spinner';
 import { ROUTES } from "../../shared/constants/routes";
+import { showNotification } from '../../shared/notifications';
 import { setCurrentUserData } from "../../shared/services/local-storage-service";
-
 
 export const findUsersHandler = async () => {
     const find_users = document.querySelector('.find_users');
@@ -20,7 +20,9 @@ export const findUsersHandler = async () => {
 
         table_data_tags.forEach(tag => tag.remove());
         
-        users.forEach(({firstName, lastName, email, userId, authId}) => {
+        users.forEach((user) => {
+            const {firstName, lastName, email, userId} = user;
+
             const firstNameValue = document.createElement('p');
             const lastNameValue = document.createElement('p');
             const emailValue = document.createElement('p');
@@ -39,7 +41,7 @@ export const findUsersHandler = async () => {
 
             tags_array.forEach(tag => {
                 tag.onclick = () => {
-                    setCurrentUserData({ userId, authId });
+                    setCurrentUserData(user);
                     window.location.href = ROUTES.user_details;
                 }
             })
@@ -53,6 +55,7 @@ export const findUsersHandler = async () => {
 
     search.oninput = () => {
         const searching_users = users.filter(user => user.firstName.startsWith(search.value));
+
         renderUsers(searching_users);
     }
     
