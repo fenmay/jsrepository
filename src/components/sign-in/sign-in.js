@@ -1,9 +1,8 @@
-import { signInRequest, getUsers } from '../../api/api-handlers';
+import { signInRequest, apiService } from '../../api/api-handlers';
 import { ROUTES } from '../../shared/constants/routes';
 import { setToken, setUserLocal } from '../../shared/services/local-storage-service';
-import { getToken } from '../../shared/services/local-storage-service';
 import { Spinner } from '../../shared/spinner';
-import { showNotification } from '../../shared/notifications';
+import { responseMapper } from '../../shared/helpers';
 import { 
     emailValidator, 
     showErrorMessage, 
@@ -70,25 +69,19 @@ export const signInHandler = () => {
                 userId = uid;
                 requestCount++;
             })
-            .catch(err => {
-                Spinner.hideSpinner();
-                showNotification(error.message);
-            });
-        await getUsers()
+            
+        await apiService.get('users')
             .then(response => {
-                const users = 
-                    Object.keys(response)
-                    .map(userId => ({ ...response[userId], userId }));
+                // const users = 
+                //     Object.keys(response)
+                //     .map(userId => ({ ...response[userId], userId }));
+                const users = responseMapper(response, 'userId');
                 const user = users.find(user => user.authId === userId);
                 
                 requestCount++;
                 setUserLocal(user);
-                Spinner.hideSpinner();
             })
-            .catch(err => {
-                Spinner.hideSpinner();
-                showNotification(error.message);
-            });
+            
 
             if (requestCount === 2) {
                 window.location.href = ROUTES.main; 

@@ -108,13 +108,23 @@
 // bobik.sayGau(); //Gau gau, Bobik, 10
 
 
-const first = (x) => {
-    console.log('first', x);
-}
+// const first = (x) => {
+//     console.log('first', x);
+// }
 
-const second = fn => {
-    console.log('second');
-    fn(23);
-}
+// const second = fn => {
+//     console.log('second');
+//     fn(23);
+// }
 
-second(first);
+// second(first);
+
+const obj = {
+    name: 'Alex',
+    age: 28
+};
+
+const field = 'name';
+
+console.log(obj.field); // undefined
+console.log(obj[field]); // Alex

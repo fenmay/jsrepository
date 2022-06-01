@@ -4,14 +4,13 @@ import {
     signInRequest,
     createUserAuthRequest, 
     createUserDataRequest,
-    getUser
+    apiService
 } from '../../api/api-handlers';
 import { setToken, setUserLocal } from '../../shared/services/local-storage-service';
 import { ROUTES } from '../../shared/constants/routes';
 import { emailValidator, showErrorMessage, hideErrorMessage } from '../../shared/validators';
 import { Spinner } from '../../shared/spinner';
 import { errorTagsIds } from '../../shared/validators';
-import { showNotification } from '../../shared/notifications';
 
 export const signUpHandler = () => {
     const firstNameInput = document.getElementById('firstNameInput');
@@ -146,38 +145,24 @@ export const signUpHandler = () => {
                 authId = response.user.uid;
                 requestCount++;
             })
-            .catch(error => {
-                Spinner.hideSpinner();
-                showNotification(error.message);
-            });
+            
         await createUserDataRequest({...userData, authId})
             .then(res => {
                 userId = res.name;
                 requestCount++;
             })
-            .catch(error => {
-                Spinner.hideSpinner();
-                showNotification(error.message);
-            });
+            
         await signInRequest({email, password})
             .then(({ user: { accessToken }}) =>  {
                 setToken(accessToken);
                 requestCount++;
             })
-            .catch(error => {
-                Spinner.hideSpinner();
-                showNotification(error.message);
-            });
-        await getUser(userId)
+            
+        await apiService.get(`/users/${userId}`)
             .then((res) => {
                 setUserLocal(res);
                 requestCount++;
-                Spinner.hideSpinner();
             })
-        .catch(error => {
-            Spinner.hideSpinner();
-            showNotification(error.message);
-        });
 
         if (requestCount === 4) {
             window.location.href = ROUTES.main;

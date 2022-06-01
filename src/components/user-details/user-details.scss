@@ -35,7 +35,7 @@
         }
     }
 
-    &__todos, &__todos__todo {
+    &__todos, &__todos__todo, &__todos__todo__left-comment-wrapper {
         @include size(90%);
         @include border(1px, solid, $primary, 5px);
         margin: 20px auto;
@@ -69,6 +69,11 @@
                 textarea {
                     margin-bottom: 15px;
                 }
+            }
+
+            &__left-comment-wrapper {
+                height: 50px;
+                width: 100% !important;
             }
         }
     }

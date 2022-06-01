@@ -5,13 +5,20 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 
-import { FIREBASE_CONFIG, AUTH_URL, DB_URL } from './api-config';
+import { FIREBASE_CONFIG, DB_URL } from './api-config';
+
+import { showNotification } from '../shared/notifications';
+import { Spinner } from '../shared/spinner';
 
 const app = initializeApp(FIREBASE_CONFIG);
 const auth = getAuth();
 
 export const signInRequest = ({ email, password }) => {
-  return signInWithEmailAndPassword(auth, email, password);
+  return signInWithEmailAndPassword(auth, email, password)
+  .catch(err => {
+    Spinner.hideSpinner();
+    showNotification(error.message);
+  });
 };
 
 export const createUserAuthRequest = ({ email, password_1 }) => {
@@ -30,14 +37,6 @@ export const createUserDataRequest = (user) => {
   }).then((res) => res.json());
 };
 
-export const getUsers = () => {
-  return fetch(`${DB_URL}/users.json`).then((response) => response.json());
-};
-
-export const getUser = (id) => {
-  return fetch(`${DB_URL}/users/${id}.json`).then((response) => response.json());
-};
-
 export const updateUser = (user, id) => {
   return fetch(
     `${DB_URL}/users/${id}.json`,
@@ -48,45 +47,80 @@ export const updateUser = (user, id) => {
     ).then((response) => response.json());
 }
 
-export const getTodos = () => {
-  return fetch(`${DB_URL}/todos.json`).then(response => response.json());
+////////////////////////////////
+
+const get = url => {
+  return fetch(`${DB_URL}/${url}.json`)
+  .then(response => {
+    Spinner.hideSpinner();
+
+    return response.json()
+  })
+  .catch(error => {
+    Spinner.hideSpinner();
+    showNotification(error.message);
+  });
 }
 
-export const createTodo = todo => {
+const del = url => {
   return fetch(
-    `${DB_URL}/todos.json`,
-    {
-      method: 'POST',
-      body: JSON.stringify(todo)
-    }
-  ).then(response => response.json());
-}
-
-export const updateTodo = (todo, id) => {
-  return fetch(
-    `${DB_URL}/todos/${id}.json`,
-    {
-      method: 'PUT',
-      body: JSON.stringify(todo)
-    }
-  ).then(response => response.json());
-}
-
-export const deleteTodo = id => {
-  return fetch(
-    `${DB_URL}/todos/${id}.json`,
+    `${DB_URL}/${url}.json`,
     {
       method: 'DELETE'
     }
-  ).then(response => response.json());
+  ).then(response => {
+    Spinner.hideSpinner();
+
+    return response.json();
+  })
+  .catch(error => {
+    Spinner.hideSpinner();
+    showNotification(error.message);
+  });
 }
 
-export const createComment = comment => {
+const put = (url, body) => {
   return fetch(
-    `${DB_URL}/comments.json`,
+    `${DB_URL}/${url}.json`,
+    {
+      method: 'PUT',
+      body: JSON.stringify(body)
+    }
+  ).then(response => {
+    Spinner.hideSpinner();
+
+    return response.json();
+  })
+  .catch(error => {
+    Spinner.hideSpinner();
+    showNotification(error.message);
+  });
+}
+
+const post = (url, body) => {
+  return fetch(
+    `${DB_URL}/${url}.json`,
     {
       method: 'POST',
-      body: JSON.stringify(comment)
+      body: JSON.stringify(body)
     }
-  ).then(response => response.json());
+  )
+    .then(response => {
+      Spinner.hideSpinner();
+
+      return response.json();
+
+    })
+    .catch(error => {
+      Spinner.hideSpinner();
+      showNotification(error.message);
+    });
+}
+
+
+export const apiService = {
+  get, 
+  del,
+  put,
+  post
 }

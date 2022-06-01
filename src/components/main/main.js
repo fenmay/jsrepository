@@ -1,9 +1,7 @@
-import { getTodos } from '../../api/api-handlers';
 import { Todo } from '../todo/todo';
 import { Header } from '../header/header';
 import { Spinner } from '../../shared/spinner';
-import { createTodo, updateTodo, deleteTodo } from '../../api/api-handlers';
-import { showNotification } from '../../shared/notifications';
+import {  apiService } from '../../api/api-handlers';
 import { getUserLocal } from '../../shared/services/local-storage-service';
 import { Modal } from '../../shared/modal';
 import { MODAL_MESSAGES } from '../../shared/constants/modal-messages';
@@ -49,23 +47,8 @@ export const mainPageHandler = async () => {
 
   const deleteSelectedTodo = async () => {
     Spinner.showSpinner();
-    await deleteTodo(deletingTodoId)
-      .then(res => {
-        Spinner.hideSpinner();
-      })
-      .catch(error => {
-        Spinner.hideSpinner();
-        showNotification(error.message);
-      });
-    await getTodos()
-      .then(todosArr => {
-        Spinner.hideSpinner();
-        renderTodos(todosArr);
-      })
-      .catch(error => {
-        Spinner.hideSpinner();
-        showNotification(error.message);
-      });
+    await apiService.del(`todos/${deletingTodoId}`);
+    await apiService.get('todos').then(todosArr => renderTodos(todosArr));
   }
 
   const deleteTodoHandler = async todoId => {
@@ -109,53 +92,22 @@ const setIsComplete = (isComplete, todoId) => {
 
   const createNewTodo = async () => {
     Spinner.showSpinner();
-    await createTodo(
-      {
-        ...newTodo, 
+    
+    const todo = {
+      ...newTodo, 
         date: new Date(), 
         UserId: getUserLocal().authId, 
         isComplete: false,
         comments: []
-      }
-    )
-    .then(response => {
-      Spinner.hideSpinner();
-      clearForm();
-    })
-    .catch(error => {
-      Spinner.hideSpinner();
-      showNotification(error.message);
-    });
-    await getTodos()
-    .then(todosArr => {
-      Spinner.hideSpinner();
-      renderTodos(todosArr);
-  })
-    .catch(error => {
-      Spinner.hideSpinner();
-      showNotification(error.message);
-    });
+    }
+    await apiService.post('todos', todo).then(response => clearForm());
+    await apiService.get('todos').then(todosArr => renderTodos(todosArr));
   }
 
   const updateCurrentTodo = async (todo, id) => {
     Spinner.showSpinner();
-    await updateTodo(todo, id)
-      .then(response => {
-        clearForm();
-      })
-      .catch(error => {
-        Spinner.hideSpinner();
-        showNotification(error.message);
-      });
-    await getTodos()
-    .then(todosArr => {
-      Spinner.hideSpinner();
-      renderTodos(todosArr);
-  })
-    .catch(error => {
-      Spinner.hideSpinner();
-      showNotification(error.message);
-    });
+    await apiService.put(`todos/${id}`, todo).then(response => clearForm());
+    await apiService.get('todos').then(todosArr => renderTodos(todosArr));
   }
 
   title.oninput = () => {
@@ -186,14 +138,5 @@ const setIsComplete = (isComplete, todoId) => {
 
   Header.getHeader(mainPage);
   Spinner.showSpinner();
-  await getTodos()
-    .then(todosArr => {
-      Spinner.hideSpinner();
-      renderTodos(todosArr);
-  })
-    .catch(error => {
-      Spinner.hideSpinner();
-      showNotification(error.message);
-    });
-
+  await apiService.get('todos').then(todosArr => renderTodos(todosArr));
 }

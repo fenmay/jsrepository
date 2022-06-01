@@ -1,9 +1,9 @@
 import { Header } from "../header/header";
-import { getUsers } from "../../api/api-handlers";
+import { apiService } from "../../api/api-handlers";
 import { Spinner } from '../../shared/spinner';
 import { ROUTES } from "../../shared/constants/routes";
-import { showNotification } from '../../shared/notifications';
 import { setCurrentUserData } from "../../shared/services/local-storage-service";
+import { responseMapper } from "../../shared/helpers";
 
 export const findUsersHandler = async () => {
     const find_users = document.querySelector('.find_users');
@@ -62,14 +62,11 @@ export const findUsersHandler = async () => {
     Header.getHeader(find_users);
     Spinner.showSpinner();
     
-    await getUsers()
+    await apiService.get('users')
     .then(response => {
-        users = Object.keys(response).map(userId => ({ ...response[userId], userId }));
+        // users = Object.keys(response).map(userId => ({ ...response[userId], userId }));
+        users = responseMapper(response, 'userId');
         renderUsers(users);
-        Spinner.hideSpinner();
     })
-    .catch(error => {
-        Spinner.hideSpinner();
-        showNotification(error.message);
-    })
+    
 }
