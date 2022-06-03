@@ -35,7 +35,7 @@
         }
     }
 
-    &__todos, &__todos__todo, &__todos__todo__left-comment-wrapper {
+    &__todos, &__todos__todo {
         @include size(90%);
         @include border(1px, solid, $primary, 5px);
         margin: 20px auto;
@@ -71,10 +71,10 @@
                 }
             }
 
-            &__left-comment-wrapper {
-                height: 50px;
-                width: 100% !important;
-            }
+            // &__left-comment-wrapper {
+            //     height: 50px;
+            //     width: 100% !important;
+            // }
         }
     }
 }

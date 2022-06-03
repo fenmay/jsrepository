@@ -5,6 +5,7 @@ import { Spinner } from "../../shared/spinner";
 import { apiService } from "../../api/api-handlers";
 import { getCurrentUserData, getUserLocal } from "../../shared/services/local-storage-service";
 import { responseMapper } from "../../shared/helpers";
+import { Comment } from "../comment/comment";
 
 export const userDetailsHandler = async () => {
     const userDetails = document.querySelector('.user-details');
@@ -15,8 +16,27 @@ export const userDetailsHandler = async () => {
     const photoWrapper = document.querySelector('.user-details__info__photo');
     const todosContainer = document.querySelector('.user-details__todos');
 
+    
+
     let comments;
     let users;
+
+    const likeHandler = async (userId, commentId, isLikeWasDone) => {
+        const comment = comments.find(({id}) => id === commentId);
+        let likes = comments.likes || [];
+
+        if (isLikeWasDone) {
+            likes = likes.filter(id => id !== userId);
+        } else {
+            likes.push(userId);
+        }
+
+        await apiService.put(`comments/${commentId}`, {...comment, likes})
+            .then(response => console.log('response', response))
+
+        console.log(comment);
+    };
+
     const renderTodos = todosObj => {
         const authId = getCurrentUserData().authId;
         const todos = responseMapper(todosObj, 'id').filter(todo => todo.UserId === authId);
@@ -32,14 +52,20 @@ export const userDetailsHandler = async () => {
                     const submitCommentBtn = document.createElement('button');
                     const leftComments = document.createElement('div');
 
-                    const filteredComments = comments.filter(comment => comment.todoId === id);
+                    if (comments) {
+                        const filteredComments = comments.filter(comment => comment.todoId === id);
 
-                    filteredComments.forEach(comment => {
-                        const leftCommentWrapper = document.createElement('div');
+                        filteredComments.forEach(comment => {
+                            const user = users.find(user => user.id === comment.commentatorId)
+                            
 
-                        leftCommentWrapper.className = 'user-details__todos__todo__left-comment-wrapper';
-                        leftComments.append(leftCommentWrapper);
-                    })
+                            leftComments.append(Comment.getComment(user, comment, likeHandler));
+                            console.log('comments', comments);
+                        })
+                    }
+
+                    console.log('users', users);
+                    console.log('comments', comments);
 
                     todoItemTitle.innerText = title;
                     todoItemDescription.innerText = description;
@@ -52,7 +78,7 @@ export const userDetailsHandler = async () => {
                     commentContainer.className = 'user-details__todos__todo__comment';
                     submitCommentBtn.className = 'btn btn-primary';
                     
-                    console.log(todo);
+                    // console.log(todo);
                     submitCommentBtn.onclick = async () => {
                         if (commentText.value) {
                     let commentId;
@@ -62,7 +88,8 @@ export const userDetailsHandler = async () => {
                         date: new Date(),
                         text: commentText.value,
                         todoId: id,
-                        userId: getUserLocal().userId
+                        userId: getCurrentUserData().userId,
+                        commentatorId: getUserLocal().userId
                     };
 
                     await apiService.post('comments', comment)
@@ -108,12 +135,17 @@ export const userDetailsHandler = async () => {
         photoWrapper.append(userPhoto);
         })
     Spinner.showSpinner();
-    await apiService.get('comments').then(response => {
-        comments = responseMapper(response, 'id').filter(comment => comment.userId === getCurrentUserData().userId);
-    })
-    await apiService.get('todos').then(todos => renderTodos(todos));
     await apiService.get('users').then(response => {
         users = responseMapper(response, 'id');
     })
+    await apiService.get('comments').then(response => {
+        if (response) {
+            comments = responseMapper(response, 'id').filter(comment => comment.userId === getCurrentUserData().userId);
+        }
+    })
+    await apiService.get('todos').then(todos => renderTodos(todos));
+    // await apiService.get('users').then(response => {
+    //     users = responseMapper(response, 'id');
+    // })
         
 }
