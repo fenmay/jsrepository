@@ -19,14 +19,7 @@ export const userDetailsHandler = async () => {
     let users;
     const renderTodos = todosObj => {
         const authId = getCurrentUserData().authId;
-        const todos = responseMapper(todosObj, 'id')
-            .filter(todo => todo.UserId === authId);
-        // const todos =
-        // Object.keys(todosObj)
-        //     .map(key => ({id: key, ...todosObj[key]}))
-        //     .filter(todo => todo.UserId === authId);
-
-            console.log(todos);
+        const todos = responseMapper(todosObj, 'id').filter(todo => todo.UserId === authId);
                 
                 todos.forEach(todo => {
                     const {title, description, date, id} = todo;
@@ -116,16 +109,11 @@ export const userDetailsHandler = async () => {
         })
     Spinner.showSpinner();
     await apiService.get('comments').then(response => {
-        // comments = Object.keys(response)
-        //     .map(key => ({ id: key, ...response[key] }))
-        //     .filter(comment => comment.userId === getCurrentUserData().userId);
         comments = responseMapper(response, 'id').filter(comment => comment.userId === getCurrentUserData().userId);
     })
     await apiService.get('todos').then(todos => renderTodos(todos));
     await apiService.get('users').then(response => {
-        // users = Object.keys(response).map(key => ({...response[key], id: key}))
         users = responseMapper(response, 'id');
-        console.log(users);
     })
         
 }

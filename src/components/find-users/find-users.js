@@ -64,7 +64,6 @@ export const findUsersHandler = async () => {
     
     await apiService.get('users')
     .then(response => {
-        // users = Object.keys(response).map(userId => ({ ...response[userId], userId }));
         users = responseMapper(response, 'userId');
         renderUsers(users);
     })

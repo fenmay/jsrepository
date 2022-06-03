@@ -72,9 +72,6 @@ export const signInHandler = () => {
             
         await apiService.get('users')
             .then(response => {
-                // const users = 
-                //     Object.keys(response)
-                //     .map(userId => ({ ...response[userId], userId }));
                 const users = responseMapper(response, 'userId');
                 const user = users.find(user => user.authId === userId);
                 
