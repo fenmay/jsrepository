@@ -9,6 +9,7 @@
 @import '../components/user-details/user-details.scss';
 @import '../components/header/header.scss';
 @import '../components/comment/comment.scss';
+@import '../components/profile/profile.scss';
 
 body {
     margin: 0;
@@ -100,4 +101,17 @@ display: none;
         font-weight: 600;
     }
     
+}
+
+.dropdown-menu {
+    li {
+        cursor: pointer;
+    }
+}
+
+.btn-group {
+    .btn {
+        background-color: white;
+        @include border(2px, solid, black, 10px);
+    }
 }

@@ -1,12 +1,12 @@
-export const PATHNAMES ={
+export const PATHNAMES = {
     home: '/',
     sign_in: '/sign-in.html',
     main: '/main.html',
     sign_up: '/sign-up.html',
     find_users: '/find-users.html',
-    user_details: '/user-details.html'
-}
-
+    user_details: '/user-details.html',
+    profile: '/profile.html'
+};
 
 export const ROUTES = {
     home: '/',
@@ -14,5 +14,6 @@ export const ROUTES = {
     main: 'main.html',
     sign_up: 'sign-up.html',
     find_users: 'find-users.html',
-    user_details: 'user-details.html'
-}
+    user_details: 'user-details.html',
+    profile: 'profile.html'
+};
