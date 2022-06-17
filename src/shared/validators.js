@@ -1,9 +1,11 @@
 import { REGEX } from "./regex";
 
-const errorsMessages = new Map([
+export const ERROR_MESSAGES = new Map([
     ['email', 'Invalid email template. Please, correct it.'],
     ['required', 'This field is required.'],
-    ['passwords', 'Both passwords must be same.']
+    ['passwords', 'Both passwords must be same.'],
+    ['wrong_file_type', 'Allowed file types are .png, .jpg, .jpeg'],
+    ['wrong_file_size', 'Allowed file size is 5 MB']
 ]);
 
 const showErrorTag = (id, message) => {
@@ -20,11 +22,11 @@ const hideErrorTag = id => {
 }
 
 const errorTagsHandlers = new Map([
-    ['email_show', (id) => showErrorTag(id, errorsMessages.get('email'))],
+    ['email_show', (id) => showErrorTag(id, ERROR_MESSAGES.get('email'))],
     ['email_hide', (id) => hideErrorTag(id)],
-    ['required_show', (id) => showErrorTag(id, errorsMessages.get('required'))],
+    ['required_show', (id) => showErrorTag(id, ERROR_MESSAGES.get('required'))],
     ['required_hide', (id) => hideErrorTag(id)],
-    ['passwords_show', (id) => showErrorTag(id, errorsMessages.get('passwords'))],
+    ['passwords_show', (id) => showErrorTag(id, ERROR_MESSAGES.get('passwords'))],
     ['passwords_hide', (id) => hideErrorTag(id)]
 ]);
 

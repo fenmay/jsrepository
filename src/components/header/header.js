@@ -8,7 +8,7 @@ export class Header {
 
     static getHeader(place) {
       if (Object.values(getUserLocal()).length) {
-        const { firstName, lastName, email } = getUserLocal();
+        const { firstName, lastName, email, photo } = getUserLocal();
         const header = document.createElement('div');
         const headerLogo = document.createElement('div');
         const headerTitle = document.createElement('div');
@@ -21,6 +21,7 @@ export class Header {
         const headerFindUser = document.createElement('button');
         const dropdownWrapper = document.createElement('div');
         const logout = document.getElementById('logout');
+        const image = document.createElement('img');
 
         header.className = 'header';
         headerLogo.className = 'header__logo';
@@ -28,6 +29,7 @@ export class Header {
         headerUserInfo.className = 'header__user__info';
         headerUserPhoto.className = 'header__user__photo';
         headerButtons.className = 'header__user__btns';
+        image.setAttribute('id', 'avatar');
 
         headerTitle.innerText = 'TODO LIST';
         headerUserName.innerText = `${firstName} ${lastName}`;
@@ -52,6 +54,9 @@ export class Header {
           window.location.href = ROUTES.main;
         }
 
+        image.setAttribute('src', photo || 'src/assets/img/no-avatar.png')
+
+        headerUserPhoto.append(image);
         headerLogo.append(headerTitle);
         headerUser.append(headerUserInfo, headerUserPhoto, headerButtons);
         headerUserInfo.append(headerUserName, headerUserEmail);
@@ -79,5 +84,15 @@ export class Header {
     static logout() {
       clearLocalStorage();
       window.location.href = ROUTES.sign_in;
+    }
+
+    static refreshAvatar() {
+      const avatarWrapper = document.querySelector('.header__user__photo');
+      const image = document.getElementById('avatar');
+      const { photo } = getUserLocal();
+
+      image.remove();
+      image.setAttribute('src', photo);
+      avatarWrapper.append(image);
     }
 }

@@ -13,20 +13,24 @@
             <div class="profile__photo"></div>
                 <div class="profole__info">
                     <div class="form-floating mb-3 profole__info">
-                        <input  id="firstName" class="form-control" placeholder="name@example.com" value="Levi" disabled>
+                        <input  id="firstName" class="form-control" placeholder="name@example.com" disabled>
                         <label for="firstName">First name</label>
                     </div>
                     <div class="form-floating mb-3 profole__info">
-                        <input  id="lastName" class="form-control" placeholder="name@example.com" value="Akkerman" disabled>
+                        <input  id="lastName" class="form-control" placeholder="name@example.com" disabled>
                         <label for="lastName">Last name</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input  id="birth" type="date" class="form-control" value="2020-03-06">
+                        <input  id="birth" type="date" class="form-control" disabled>
                         <label for="birth">Birth</label>
                     </div>
                     <div class="mb-3 form-floating">
-                        <input class="form-control" type="file" id="photo">
+                        <input class="form-control" type="file" id="photo" disabled>
                         <label for="photo" class="form-label">Upload photo</label>
+                    </div>
+                    <div class="profile__info__btns">
+                        <button id="editBtn" class="btn btn-primary">Edit</button>
+                        <button id="cancelBtn" class="btn btn-danger hidden">Cancel</button>
                     </div>
                 </div>
                 
