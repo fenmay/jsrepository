@@ -46,13 +46,13 @@ export const profileHandler = () => {
 
 
         } else {
+            const newBirth = moment(birthInput.value).isValid() ? moment(birthInput.value).format() : birth; 
             const userForRequest = {
                 ...user,
                 firstName: firstNameInput.value || firstName,
                 lastName: lastNameInput.value || lastName,
-                birth: birthInput.value || birth
+                birth: newBirth
             }
-
             Spinner.showSpinner();
             await apiService.put(`users/${userId}`, userForRequest)
                 .then(response => {
@@ -89,31 +89,27 @@ export const profileHandler = () => {
                 () => {},
                  async () => {
                     let photo = '';
-                    const { userId } = user;
 
-                    
-    
                     delete user.userId;
-    
                     console.log('start');
     
                     await getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                         console.log('File available at', downloadURL);
                         photo = downloadURL;
-    
-                         apiService.put(`users/${userId}`, {...user, photo})
+                    }).catch(err => Spinner.hideSpinner());
+                    await apiService.put(`users/${userId}`, {...user, photo})
                         .then(res => {
                             console.log('ok', res);
                             image.remove();
-                            image.setAttribute('src', user.photo);
+                            image.setAttribute('src', photo);
                             profilePhoto.append(image);
                             setUserLocal({...user, photo});
                             Header.refreshAvatar();
+                            console.log('done');
 
                         });
-                    });
                 }
-            ); 
+            );
         }
     }
     
