@@ -119,12 +119,15 @@
 
 // second(first);
 
-const obj = {
-    name: 'Alex',
-    age: 28
-};
+// const obj = {
+//     name: 'Alex',
+//     age: 28
+// };
 
-const field = 'name';
+// const field = 'name';
 
-console.log(obj.field); // undefined
-console.log(obj[field]); // Alex
+// console.log(obj.field); // undefined
+// console.log(obj[field]); // Alex
+
+console.log('likjuhg');
+const sum = (x, y) => a + b;

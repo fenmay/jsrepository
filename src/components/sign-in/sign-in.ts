@@ -3,6 +3,7 @@ import { ROUTES } from '../../shared/constants/routes';
 import { setToken, setUserLocal } from '../../shared/services/local-storage-service';
 import { Spinner } from '../../shared/spinner';
 import { responseMapper } from '../../shared/helpers';
+import { SignInUserData, signInResponse, UserResponse, User } from './sign-in.model';
 import { 
     emailValidator, 
     showErrorMessage, 
@@ -10,22 +11,22 @@ import {
     errorTagsIds 
 } from '../../shared/validators';
 
-export const signInHandler = () => {
-    const signInBtn = document.getElementById('sign-in-btn');
-    const passInput = document.getElementById('passInput');
-    const emailInput = document.getElementById('mailInput');
-    const userData = {
+export const signInHandler = (): void => {
+    const signInBtn: HTMLElement = document.getElementById('sign-in-btn');
+    const passInput = document.getElementById('passInput') as HTMLInputElement;
+    const emailInput = document.getElementById('mailInput') as HTMLInputElement;
+    const userData: SignInUserData = {
         email: '',
         password: ''
-    }
+    };
 
-    passInput.oninput = () => {
+    passInput.oninput = (): void => {
         userData.password = passInput.value;
         checkFormValid();
         hideErrorMessage('required_hide', errorTagsIds.get('pass1'));
     }
 
-    passInput.onblur = () => {
+    passInput.onblur = (): void => {
         if (!passInput.value) {
             passInput.classList.add('invalid-input');
             showErrorMessage('required_show', errorTagsIds.get('pass1'));
@@ -35,14 +36,14 @@ export const signInHandler = () => {
         }
     }
 
-    emailInput.oninput = () => {
+    emailInput.oninput = (): void => {
         userData.email = emailInput.value;
         checkFormValid();
         hideErrorMessage('email_hide', errorTagsIds.get('email'));
         hideErrorMessage('required_hide', errorTagsIds.get('required_email'));
     }
 
-    emailInput.onblur = () => {
+    emailInput.onblur = (): void => {
         if (!emailInput.value) {
             emailInput.classList.add('invalid-input');
             showErrorMessage('required_show', errorTagsIds.get('required_email'));
@@ -58,22 +59,22 @@ export const signInHandler = () => {
         }
     }
 
-    signInBtn.onclick = async () => {
-        let userId = '';
-        let requestCount = 0;
+    signInBtn.onclick = async (): Promise<void> => {
+        let userId: string = '';
+        let requestCount: number = 0;
 
         Spinner.showSpinner();
         await signInRequest(userData)
-            .then(({ user: { accessToken, uid }}) => {
+            .then(({ user: { accessToken, uid }} : signInResponse | any): void => {
                 setToken(accessToken);
                 userId = uid;
                 requestCount++;
             })
             
         await apiService.get('users')
-            .then(response => {
-                const users = responseMapper(response, 'userId');
-                const user = users.find(user => user.authId === userId);
+            .then((response: UserResponse) => {
+                const users: User[] = responseMapper(response, 'userId');
+                const user: User = users.find(user => user.authId === userId);
                 
                 requestCount++;
                 setUserLocal(user);
@@ -90,6 +91,6 @@ export const signInHandler = () => {
         
         isFormValid ?
             signInBtn.removeAttribute('disabled') : 
-            signInBtn.setAttribute('disabled', true);
+            signInBtn.setAttribute('disabled', 'true');
     }
 }
