@@ -5,34 +5,35 @@ import {  apiService } from '../../api/api-handlers';
 import { getUserLocal } from '../../shared/services/local-storage-service';
 import { Modal } from '../../shared/modal';
 import { MODAL_MESSAGES } from '../../shared/constants/modal-messages';
+import { newTodo, TodoModel } from '../todo/todo.model';
 
 export const mainPageHandler = async () => {
   const mainPage = document.querySelector('.main');
   const todoWrapper = document.querySelector('.main__todos');
-  const title = document.getElementById('title');
-  const description = document.getElementById('description');
+  const title = document.getElementById('title') as HTMLInputElement;
+  const description = document.getElementById('description') as HTMLTextAreaElement;
   const submitBtn = document.getElementById('submitBtn');
   const cancelBtn = document.getElementById('cancelBtn');
   
-  const newTodo = {
+  const newTodo: newTodo = {
     title: '',
     description: ''
   };
 
-  let todos = [];
+  let todos: TodoModel[] = [];
   let isEditMode = false;
   let editingTodoId = '';
   let deletingTodoId = '';
 
-  const clearForm = () => {
+  const clearForm = (): void => {
     newTodo.title = ''
     newTodo.description = ''
     title.value = null;
     description.value = null;
   }
 
-  const editTodoHandler = todoId => {
-    const findingTodo = todos.find(({id}) => id === todoId);
+  const editTodoHandler = (todoId: string): void => {
+    const findingTodo: TodoModel = todos.find(({id}: TodoModel) => id === todoId);
 
     editingTodoId = todoId;
     cancelBtn.style.display = 'inline';
@@ -45,34 +46,34 @@ export const mainPageHandler = async () => {
     checkIsFormValid();
   };
 
-  const deleteSelectedTodo = async () => {
+  const deleteSelectedTodo = async (): Promise<void> => {
     Spinner.showSpinner();
     await apiService.del(`todos/${deletingTodoId}`);
-    await apiService.get('todos').then(todosArr => renderTodos(todosArr));
+    await apiService.get('todos').then((todosArr: {[key: string]: TodoModel}) => renderTodos(todosArr));
   }
 
-  const deleteTodoHandler = async todoId => {
+  const deleteTodoHandler = (todoId: string): void => {
     deletingTodoId = todoId;
     new Modal(MODAL_MESSAGES.deleteTodo, deleteSelectedTodo).showModal();
   }
 
-const setIsComplete = (isComplete, todoId) => {
-  const findingTodo = todos.find(todo => todo.id === todoId);
+const setIsComplete = (isComplete: boolean, todoId: string): void => {
+  const findingTodo: TodoModel = todos.find((todo: TodoModel) => todo.id === todoId);
 
   delete findingTodo.id;
   updateCurrentTodo({...findingTodo, isComplete}, todoId);
 }
 
-  const renderTodos = todosArr => {
+  const renderTodos = (todosArr: {[key: string]: TodoModel}): void => {
     if (todosArr) {
-      const id = getUserLocal().authId;
+      const id: string = getUserLocal().authId;
       
       todos = [];
       todoWrapper.innerHTML = null;
       todos = Object.keys(todosArr).map(key => {
-        const todo = {id: key, ...todosArr[key]};
+        const todo: TodoModel = {id: key, ...todosArr[key]};
         
-        if (todo.UserId === id) {
+        if (todo.userId === id) {
           todoWrapper.append(
             new Todo(
               todo, 
@@ -87,49 +88,49 @@ const setIsComplete = (isComplete, todoId) => {
     } else todoWrapper.innerHTML = null;
   }
 
-  const checkIsFormValid = () => Object.values(newTodo).every(value => !!value) ?
-    submitBtn.removeAttribute('disabled') : submitBtn.setAttribute('disabled', true); 
+  const checkIsFormValid = (): void => Object.values(newTodo).every(value => !!value) ?
+    submitBtn.removeAttribute('disabled') : submitBtn.setAttribute('disabled', 'true'); 
 
-  const createNewTodo = async () => {
+  const createNewTodo = async (): Promise<void> => {
     Spinner.showSpinner();
     
-    const todo = {
+    const todo: TodoModel = {
       ...newTodo, 
         date: new Date(), 
-        UserId: getUserLocal().authId, 
+        userId: getUserLocal().authId, 
         isComplete: false,
         comments: []
     }
-    await apiService.post('todos', todo).then(response => clearForm());
-    await apiService.get('todos').then(todosArr => renderTodos(todosArr));
+    await apiService.post('todos', todo).then(() => clearForm());
+    await apiService.get('todos').then((todosArr: {[key: string]: TodoModel}) => renderTodos(todosArr));
   }
 
-  const updateCurrentTodo = async (todo, id) => {
+  const updateCurrentTodo = async (todo: TodoModel, id: string): Promise<void> => {
     Spinner.showSpinner();
-    await apiService.put(`todos/${id}`, todo).then(response => clearForm());
-    await apiService.get('todos').then(todosArr => renderTodos(todosArr));
+    await apiService.put(`todos/${id}`, todo).then(() => clearForm());
+    await apiService.get('todos').then((todosArr: {[key: string]: TodoModel}) => renderTodos(todosArr));
   }
 
-  title.oninput = () => {
+  title.oninput = (): void => {
     newTodo.title = title.value;
     checkIsFormValid();
   }
   
-  description.oninput = () => {
+  description.oninput = (): void => {
     newTodo.description = description.value;
     checkIsFormValid();
   }
 
-  submitBtn.onclick = async () => {
+  submitBtn.onclick = async (): Promise<void> => {
     if (isEditMode) {
-      const findingTodo = todos.find(todo => todo.id === editingTodoId);
-      const todoToRequest = {...findingTodo, ...newTodo, date: new Date(), UserId: getUserLocal().authId};
+      const findingTodo: TodoModel = todos.find((todo: TodoModel) => todo.id === editingTodoId);
+      const todoToRequest: TodoModel = {...findingTodo, ...newTodo, date: new Date(), userId: getUserLocal().authId};
       updateCurrentTodo(todoToRequest, editingTodoId);
     } else createNewTodo();
    
   }
 
-  cancelBtn.onclick = () => {
+  cancelBtn.onclick = (): void => {
     clearForm();
     isEditMode = false;
     cancelBtn.style.display = 'none';
@@ -138,5 +139,5 @@ const setIsComplete = (isComplete, todoId) => {
 
   Header.getHeader(mainPage);
   Spinner.showSpinner();
-  await apiService.get('todos').then(todosArr => renderTodos(todosArr));
+  await apiService.get('todos').then((todosArr: {[key: string]: TodoModel}) => renderTodos(todosArr));
 }

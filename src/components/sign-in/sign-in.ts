@@ -86,8 +86,8 @@ export const signInHandler = (): void => {
             }
     }
 
-    const checkFormValid = () => {
-        const isFormValid = Object.values(userData).every(value => !!value);
+    const checkFormValid = (): void => {
+        const isFormValid: boolean = Object.values(userData).every(value => !!value);
         
         isFormValid ?
             signInBtn.removeAttribute('disabled') : 

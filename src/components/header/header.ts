@@ -4,9 +4,10 @@ import { Modal } from '../../shared/modal';
 import { MODAL_MESSAGES } from '../../shared/constants/modal-messages';
 
 export class Header {
-    constructor() {}
-
-    static getHeader(place) {
+    static getHeader(place: Element): void {
+      // const logout = document.getElementById('logout');
+      let logout: HTMLElement
+      
       if (Object.values(getUserLocal()).length) {
         const { firstName, lastName, email, photo } = getUserLocal();
         const header = document.createElement('div');
@@ -20,7 +21,6 @@ export class Header {
         const headerButtons = document.createElement('div');
         const headerFindUser = document.createElement('button');
         const dropdownWrapper = document.createElement('div');
-        const logout = document.getElementById('logout');
         const image = document.createElement('img');
 
         header.className = 'header';
@@ -50,7 +50,7 @@ export class Header {
           </div>
           `;
 
-        headerTitle.onclick = () => {
+        headerTitle.onclick = (): void => {
           window.location.href = ROUTES.main;
         }
 
@@ -60,15 +60,12 @@ export class Header {
         headerLogo.append(headerTitle);
         headerUser.append(headerUserInfo, headerUserPhoto, headerButtons);
         headerUserInfo.append(headerUserName, headerUserEmail);
-        headerButtons.append(headerFindUser, dropdownWrapper); //append here
+        headerButtons.append(headerFindUser, dropdownWrapper); 
         header.append(headerLogo, headerUser);
         place.prepend(header); 
 
-        // headerLogOut.onclick = () => {
-        //     new Modal (MODAL_MESSAGES.logout, this.logout).showModal();
-        //   };
 
-        headerFindUser.onclick = () => {
+        headerFindUser.onclick = (): void => {
           window.location.href = ROUTES.find_users;
         };
 
@@ -76,17 +73,18 @@ export class Header {
 
       } else this.logout();
 
-      logout.onclick = () => {
+      logout = document.getElementById('logout');
+      logout.onclick = (): void => {
         new Modal (MODAL_MESSAGES.logout, this.logout).showModal();
       }
     }
 
-    static logout() {
+    static logout(): void {
       clearLocalStorage();
       window.location.href = ROUTES.sign_in;
     }
 
-    static refreshAvatar() {
+    static refreshAvatar(): void {
       const avatarWrapper = document.querySelector('.header__user__photo');
       const image = document.getElementById('avatar');
       const { photo } = getUserLocal();

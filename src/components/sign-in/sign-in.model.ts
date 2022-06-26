@@ -11,12 +11,14 @@ export interface signInResponse {
 }
 
 export interface User {
+    id?: string,
     firstName: string,
     lastName: string,
     email: string,
     birth: string | Date,
     authId: string,
-    photo?: string
+    photo?: string,
+    userId?: string
 }
 
 export interface UserResponse {

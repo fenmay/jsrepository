@@ -9,24 +9,26 @@ import { FIREBASE_CONFIG, DB_URL } from './api-config';
 
 import { showNotification } from '../shared/notifications';
 import { Spinner } from '../shared/spinner';
+import { User } from '../components/sign-in/sign-in.model';
+import { SignUpUserData } from '../components/sign-up/signUp.model';
 
 const app = initializeApp(FIREBASE_CONFIG);
 const auth = getAuth();
 
-export const signInRequest = ({ email, password }) => {
+export const signInRequest = ({ email, password }: {email: string, password: string}): Promise<any> => {
   return signInWithEmailAndPassword(auth, email, password)
-  .catch(err => {
+  .catch((error) => {
     Spinner.hideSpinner();
     showNotification(error.message);
   });
 };
 
-export const createUserAuthRequest = ({ email, password_1 }) => {
+export const createUserAuthRequest = ({ email, password_1 }: {email: string, password_1: string}): Promise<any> => {
   return createUserWithEmailAndPassword(auth, email, password_1);
 };
 
-export const createUserDataRequest = (user) => {
-  const userData = user;
+export const createUserDataRequest = (user: SignUpUserData): Promise<any> => {
+  const userData: SignUpUserData = user;
 
   delete userData.password_1;
   delete userData.password_2;
@@ -37,7 +39,7 @@ export const createUserDataRequest = (user) => {
   }).then((res) => res.json());
 };
 
-export const updateUser = (user, id) => {
+export const updateUser = (user: any, id: string): Promise<any> => {
   return fetch(
     `${DB_URL}/users/${id}.json`,
     {
@@ -49,9 +51,9 @@ export const updateUser = (user, id) => {
 
 ////////////////////////////////
 
-const get = url => {
+const get = (url: string): Promise<any> => {
   return fetch(`${DB_URL}/${url}.json`)
-  .then(response => {
+  .then((response: Response) => {
     Spinner.hideSpinner();
 
     return response.json()
@@ -62,13 +64,13 @@ const get = url => {
   });
 }
 
-const del = url => {
+const del = (url: string): Promise<any> => {
   return fetch(
     `${DB_URL}/${url}.json`,
     {
       method: 'DELETE'
     }
-  ).then(response => {
+  ).then((response: Response) => {
     Spinner.hideSpinner();
 
     return response.json();
@@ -79,14 +81,14 @@ const del = url => {
   });
 }
 
-const put = (url, body) => {
+const put = (url:string, body: any): Promise<any> => {
   return fetch(
     `${DB_URL}/${url}.json`,
     {
       method: 'PUT',
       body: JSON.stringify(body)
     }
-  ).then(response => {
+  ).then((response: Response) => {
     Spinner.hideSpinner();
 
     return response.json();
@@ -97,7 +99,7 @@ const put = (url, body) => {
   });
 }
 
-const post = (url, body) => {
+const post = (url: string, body: any): Promise<any> => {
   return fetch(
     `${DB_URL}/${url}.json`,
     {
@@ -105,7 +107,7 @@ const post = (url, body) => {
       body: JSON.stringify(body)
     }
   )
-    .then(response => {
+    .then((response: Response) => {
       Spinner.hideSpinner();
 
       return response.json();
@@ -118,7 +120,7 @@ const post = (url, body) => {
 }
 
 
-export const apiService = {
+export const apiService: {[key: string]: Function} = {
   get, 
   del,
   put,

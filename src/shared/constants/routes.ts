@@ -1,6 +1,6 @@
-import { NavigationItems } from '../models/main.model'
+import { MainKeyValueItem } from '../models/main.model'
 
-export const PATHNAMES: NavigationItems = {
+export const PATHNAMES: MainKeyValueItem = {
     home: '/',
     sign_in: '/sign-in.html',
     main: '/main.html',
@@ -10,7 +10,7 @@ export const PATHNAMES: NavigationItems = {
     profile: '/profile.html',
 };
 
-export const ROUTES: NavigationItems = {
+export const ROUTES: MainKeyValueItem = {
     home: '/',
     sign_in: 'sign-in.html',
     main: 'main.html',

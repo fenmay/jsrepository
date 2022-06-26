@@ -4,18 +4,18 @@ import { Spinner } from '../../shared/spinner';
 import { ROUTES } from "../../shared/constants/routes";
 import { setCurrentUserData } from "../../shared/services/local-storage-service";
 import { responseMapper } from "../../shared/helpers";
+import { User } from "../sign-in/sign-in.model";
 
 export const findUsersHandler = async () => {
     const find_users = document.querySelector('.find_users');
-    const usersWrapper = document.getElementById('users');
     const first_name_table = document.querySelector('.find_users__header__first-name');
     const last_name_table = document.querySelector('.find_users__header__last-name');
     const email_table = document.querySelector('.find_users__header__email');
     const id_table = document.querySelector('.find_users__header__id');
-    const search = document.getElementById('search');
-    let users = [];
+    const search = document.getElementById('search') as HTMLInputElement;
+    let users: User[] = [];
 
-    const renderUsers = (users) => {
+    const renderUsers = (users: User[]) => {
         const table_data_tags = document.querySelectorAll('.table-data');
 
         table_data_tags.forEach(tag => tag.remove());
@@ -40,7 +40,7 @@ export const findUsersHandler = async () => {
             idValue.innerText = userId;
 
             tags_array.forEach(tag => {
-                tag.onclick = () => {
+                tag.onclick = (): void => {
                     setCurrentUserData(user);
                     window.location.href = ROUTES.user_details;
                 }
@@ -53,8 +53,8 @@ export const findUsersHandler = async () => {
         });
     }
 
-    search.oninput = () => {
-        const searching_users = users.filter(user => user.firstName.startsWith(search.value));
+    search.oninput = (): void => {
+        const searching_users: User[] = users.filter((user: User) => user.firstName.startsWith(search.value));
 
         renderUsers(searching_users);
     }
@@ -63,7 +63,7 @@ export const findUsersHandler = async () => {
     Spinner.showSpinner();
     
     await apiService.get('users')
-    .then(response => {
+    .then((response: {[key: string]: User}) => {
         users = responseMapper(response, 'userId');
         renderUsers(users);
     })

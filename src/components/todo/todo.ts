@@ -1,24 +1,31 @@
+import { TodoModel } from "./todo.model";
+
 export class Todo {
-    #id;
-    #description;
-    #title;
-    #isComplete;
+    private readonly id: string;
+    private readonly description: string;
+    private readonly title: string;
+    private readonly isComplete: boolean;
 
-    #editFn;
-    #deleteFn;
-    #setIsComplete;
+    private readonly editFn: Function;
+    private readonly deleteFn: Function;
+    private readonly setIsComplete: Function;
 
-    constructor({ id, description, title, isComplete }, editFn, deleteFn, setIsComplete) {
-        this.#id = id;
-        this.#description = description;
-        this.#title = title;
-        this.#editFn = editFn;
-        this.#deleteFn = deleteFn;
-        this.#setIsComplete = setIsComplete;
-        this.#isComplete = isComplete;
+    constructor(
+        { id = '', description = '', title = '', isComplete = false }: TodoModel, 
+        editFn:Function, 
+        deleteFn: Function, 
+        setIsComplete: Function
+    ) {
+        this.id = id;
+        this.description = description;
+        this.title = title;
+        this.isComplete = isComplete;
+        this.editFn = editFn;
+        this.deleteFn = deleteFn;
+        this.setIsComplete = setIsComplete;
     }
 
-    getTodo() {
+    getTodo(): HTMLElement {
         const todoWrapper = document.createElement('div');
         const title = document.createElement('h4');
         const description = document.createElement('p');
@@ -28,8 +35,8 @@ export class Todo {
         const toggler = document.createElement('input');
         const togglerLabel = document.createElement('span');
 
-        editIcon.onclick = () => this.#editFn(this.#id);
-        deleteIcon.onclick = () => this.#deleteFn(this.#id);
+        editIcon.onclick = () => this.editFn(this.id);
+        deleteIcon.onclick = () => this.deleteFn(this.id);
         
         editIcon.innerHTML = '<i class="fa-solid fa-pen-to-square edit-icon"></i>';
         deleteIcon.innerHTML = '<i class="fa-solid fa-trash"></i>';
@@ -37,18 +44,21 @@ export class Todo {
         togglerWrapper.className = 'form-check form-switch toggler';
         toggler.className = 'form-check-input';
         toggler.setAttribute('type', 'checkbox');
-        title.innerText = this.#title;
-        description.innerText = this.#description;
+        title.innerText = this.title;
+        description.innerText = this.description;
         togglerLabel.innerText = 'Set TODO as complited';
 
-        if (this.#isComplete) {
-            toggler.setAttribute('checked', true);
+        if (this.isComplete) {
+            toggler.setAttribute('checked', 'true');
             todoWrapper.classList.add('active');
         } else {
             toggler.removeAttribute('checked');
         }
 
-        toggler.onclick = event => this.#setIsComplete(event.target.checked, this.#id);
+
+        toggler.onclick = (event: PointerEvent): void => {
+            this.setIsComplete((event.target as HTMLInputElement).checked, this.id)
+        };
 
         togglerWrapper.append(toggler, togglerLabel);
 

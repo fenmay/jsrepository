@@ -1,4 +1,4 @@
-export const showNotification = (message = 'error text', isError = true) => {
+export const showNotification = (message: string, isError: boolean = true) => {
     const body = document.getElementsByTagName('body')[0];
 
     
@@ -9,7 +9,7 @@ export const showNotification = (message = 'error text', isError = true) => {
         </div>`
     );
 
-    setTimeout(() => {
+    setTimeout((): void => {
         const notification = document.getElementById('notification');
 
         notification.remove();

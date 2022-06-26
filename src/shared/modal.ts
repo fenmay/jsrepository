@@ -1,13 +1,13 @@
 export class Modal {
-    #message;
-    #fn;
+    private readonly message: string;
+    private readonly fn: Function;
 
-    constructor(message, fn) {
-        this.#message = message;
-        this.#fn = fn;
+    constructor(message: string, fn: Function) {
+        this.message = message;
+        this.fn = fn;
     }
 
-    showModal() {
+    showModal(): void {
         const body = document.getElementsByTagName('body')[0];
         const modal = document.createElement('div');
         const modalBody = document.createElement('div');
@@ -22,15 +22,15 @@ export class Modal {
         decline.className = 'btn btn-primary';
         btns.className = 'modal-container__btns';
 
-        message.innerText = this.#message;
+        message.innerText = this.message;
         accept.innerText = 'OK';
         decline.innerText = 'CANCEL';
 
-        decline.onclick = () => modal.remove();
+        decline.onclick = (): void => modal.remove();
 
-        accept.onclick = () => {
+        accept.onclick = (): void => {
             modal.remove();
-            this.#fn();
+            this.fn();
         }
 
         btns.append(accept, decline);

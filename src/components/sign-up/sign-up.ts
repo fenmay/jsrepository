@@ -11,16 +11,19 @@ import { ROUTES } from '../../shared/constants/routes';
 import { emailValidator, showErrorMessage, hideErrorMessage } from '../../shared/validators';
 import { Spinner } from '../../shared/spinner';
 import { errorTagsIds } from '../../shared/validators';
+import { SignUpUserData} from './signUp.model';
+import { signInResponse, User } from '../../components/sign-in/sign-in.model';
+import { MainKeyValueItem } from '../../shared/models/main.model';
 
 export const signUpHandler = () => {
-    const firstNameInput = document.getElementById('firstNameInput');
-    const lastNameInput = document.getElementById('lastNameInput');
-    const birthInput = document.getElementById('birthInput');
-    const emailInput = document.getElementById('emailInput');
-    const passInput1 = document.getElementById('passInput1');
-    const passInput2 = document.getElementById('passInput2');
-    const signUpBtn = document.getElementById('signUpBtn');
-    const userData = {
+    const firstNameInput = document.getElementById('firstNameInput') as HTMLInputElement;
+    const lastNameInput = document.getElementById('lastNameInput') as HTMLInputElement;
+    const birthInput = document.getElementById('birthInput') as HTMLInputElement;
+    const emailInput = document.getElementById('emailInput') as HTMLInputElement;
+    const passInput1 = document.getElementById('passInput1') as HTMLInputElement;
+    const passInput2 = document.getElementById('passInput2') as HTMLInputElement;
+    const signUpBtn = document.getElementById('signUpBtn') as HTMLInputElement;
+    const userData: SignUpUserData  = {
         firstName: '',
         lastName: '',
         birth: '',
@@ -29,13 +32,13 @@ export const signUpHandler = () => {
         password_2: '',
     }
 
-    firstNameInput.oninput = () => {
+    firstNameInput.oninput = (): void => {
         userData.firstName = firstNameInput.value;
         checkFormValid();
         hideErrorMessage('required_hide', errorTagsIds.get('first_name'));
     }
 
-    firstNameInput.onblur = () => {
+    firstNameInput.onblur = (): void => {
         if (!firstNameInput.value) {
             firstNameInput.classList.add('invalid-input');
             showErrorMessage('required_show', errorTagsIds.get('first_name'));
@@ -45,13 +48,13 @@ export const signUpHandler = () => {
         }
     }
 
-    lastNameInput.oninput = () => {
+    lastNameInput.oninput = (): void => {
         userData.lastName = lastNameInput.value;
         checkFormValid();
         hideErrorMessage('required_hide', errorTagsIds.get('last_name'));
     }
 
-    lastNameInput.onblur = () => {
+    lastNameInput.onblur = (): void => {
         if (!lastNameInput.value) {
             lastNameInput.classList.add('invalid-input');
             showErrorMessage('required_show', errorTagsIds.get('last_name'));
@@ -61,13 +64,13 @@ export const signUpHandler = () => {
         }
     }
 
-    birthInput.oninput = () => {
+    birthInput.oninput = (): void => {
         userData.birth = moment(birthInput.value).format();
         checkFormValid();
         hideErrorMessage('required_hide', errorTagsIds.get('birth'));
     }
 
-    birthInput.onblur = () => {
+    birthInput.onblur = (): void => {
         if (!birthInput.value) {
             birthInput.classList.add('invalid-input');
             showErrorMessage('required_show', errorTagsIds.get('birth'));
@@ -77,14 +80,14 @@ export const signUpHandler = () => {
         }
     }
 
-    emailInput.oninput = () => {
+    emailInput.oninput = (): void => {
         userData.email = emailInput.value;
         checkFormValid();
         hideErrorMessage('email_hide', errorTagsIds.get('email'));
         hideErrorMessage('required_hide', errorTagsIds.get('required_email'));
     }
 
-    emailInput.onblur = () => {
+    emailInput.onblur = (): void => {
         if (!emailInput.value) {
             showErrorMessage('required_show', errorTagsIds.get('required_email'));
             hideErrorMessage('email_hide', errorTagsIds.get('email'));
@@ -100,13 +103,13 @@ export const signUpHandler = () => {
         }
     }
 
-    passInput1.oninput = () => {
+    passInput1.oninput = (): void => {
         userData.password_1 = passInput1.value;
         checkFormValid();
         hideErrorMessage('required_hide', errorTagsIds.get('pass1'));
     }
 
-    passInput1.onblur =() => {
+    passInput1.onblur = (): void => {
         if (!passInput1.value) {
             passInput1.classList.add('invalid-input');
             showErrorMessage('required_show', errorTagsIds.get('pass1'));
@@ -116,13 +119,13 @@ export const signUpHandler = () => {
         }
     }
 
-    passInput2.oninput = () => {
+    passInput2.oninput = (): void => {
         userData.password_2 = passInput2.value;
         checkFormValid();
         hideErrorMessage('passwords_hide', errorTagsIds.get('pass2'));
     }
 
-    passInput2.onblur = () => {
+    passInput2.onblur = (): void => {
         if (passInput1.value !== passInput2.value) {
             passInput2.classList.add('invalid-input');
             showErrorMessage('passwords_show', errorTagsIds.get('pass2'));
@@ -132,34 +135,34 @@ export const signUpHandler = () => {
         }
     }
 
-    signUpBtn.onclick = async () => {
+    signUpBtn.onclick = async (): Promise<void> => {
         const { email, password_1: password } = userData;
         
-        let requestCount = 0;
-        let authId = '';
-        let userId = '';
+        let requestCount: number = 0;
+        let authId: string = '';
+        let userId: string = '';
 
         Spinner.showSpinner();
         await createUserAuthRequest(userData)
-            .then(response => {
+            .then((response: signInResponse | any) => {
                 authId = response.user.uid;
                 requestCount++;
             })
             
         await createUserDataRequest({...userData, authId})
-            .then(res => {
+            .then((res: MainKeyValueItem) => {
                 userId = res.name;
                 requestCount++;
             })
             
         await signInRequest({email, password})
-            .then(({ user: { accessToken }}) =>  {
+            .then(({ user: { accessToken }}: signInResponse | any) =>  {
                 setToken(accessToken);
                 requestCount++;
             })
             
         await apiService.get(`/users/${userId}`)
-            .then((res) => {
+            .then((res: User) => {
                 setUserLocal(res);
                 requestCount++;
             })
@@ -169,12 +172,12 @@ export const signUpHandler = () => {
         }
     }
 
-    const checkFormValid = () => {
-        const isFormValid = Object.values(userData).every(value => !!value);
-        const isPasswordEqual = userData.password_1 === userData.password_2;
+    const checkFormValid = (): void => {
+        const isFormValid: boolean = Object.values(userData).every(value => !!value);
+        const isPasswordEqual: boolean = userData.password_1 === userData.password_2;
 
         isFormValid && isPasswordEqual ?
             signUpBtn.removeAttribute('disabled') : 
-            signUpBtn.setAttribute('disabled', true);
+            signUpBtn.setAttribute('disabled', 'true');
         }
 }

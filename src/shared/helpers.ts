@@ -1,4 +1,2 @@
-import { UserResponse } from "../components/sign-in/sign-in.model"
-
-export const responseMapper = (collection: UserResponse, dynamicKey: string) => Object.keys(collection)
-    .map(key => ({ ...collection[key], [dynamicKey]: key }))
+export const responseMapper = (response: {[key: string]: any}, dynamicKey: string): any[] => Object.keys(response)
+    .map(key => ({ ...response[key], [dynamicKey]: key }));

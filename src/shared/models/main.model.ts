@@ -1,3 +1,3 @@
-export interface NavigationItems {
+export interface MainKeyValueItem {
     [key: string]: string;
 }

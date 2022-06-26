@@ -3,10 +3,10 @@ import * as moment from 'moment';
 export class Comment {
 
     static getComment(
-        {firstName, lastName, id: userId}, 
-        {date, text, id: commentId, likes}, 
-        likeHandler
-    ) {
+        {firstName = '', lastName = '', id: userId = ''}, 
+        {date = '', text = '', id: commentId = '', likes = ['']}, 
+        likeHandler: Function
+    ): Element {
         const commentWrapper = document.createElement('div');
         const photo = document.createElement('div');
         const img = document.createElement('img');
@@ -31,10 +31,10 @@ export class Comment {
         user_info.innerText = `${firstName} ${lastName}`;
         comment_date.innerText = moment(date).format('LLLL');
         comment_text.innerText = text;
-        likeCount.innerText = likes ? likes.length : 0;
+        likeCount.innerText = likes ? (likes.length).toString() : '0';
         like.innerHTML = '<i class="fa-solid fa-heart"></i>';
 
-        like.onclick = () => likeHandler(userId, commentId, isLikeWasDone);
+        like.onclick = (): void => likeHandler(userId, commentId, isLikeWasDone);
 
         info.append(user_info, comment_date, comment_text);
         photo.append(img);

@@ -1,6 +1,6 @@
 export class Spinner {
-    static showSpinner() {
-        const body = document.getElementsByTagName('body')[0];
+    static showSpinner(): void {
+        const body: HTMLElement = document.getElementsByTagName('body')[0];
 
         body.insertAdjacentHTML(
             'afterbegin',
@@ -10,8 +10,8 @@ export class Spinner {
         )
     }
 
-    static hideSpinner() {
-        const spinner = document.getElementById('spinner');
+    static hideSpinner(): void {
+        const spinner: HTMLElement = document.getElementById('spinner');
 
         spinner ? spinner.remove() : null;
     }
