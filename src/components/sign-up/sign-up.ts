@@ -14,6 +14,7 @@ import { errorTagsIds } from '../../shared/validators';
 import { SignUpUserData} from './signUp.model';
 import { signInResponse, User } from '../../components/sign-in/sign-in.model';
 import { MainKeyValueItem } from '../../shared/models/main.model';
+import { PasswordStrenght } from '../password-strenght/password-strenght';
 
 export const signUpHandler = () => {
     const firstNameInput = document.getElementById('firstNameInput') as HTMLInputElement;
@@ -30,6 +31,11 @@ export const signUpHandler = () => {
         email: '',
         password_1: '',
         password_2: '',
+    };
+    let isPasswordValid: boolean = false;
+
+    const checkIsPasswordValid = (result: boolean) => {
+        isPasswordValid = result;
     }
 
     firstNameInput.oninput = (): void => {
@@ -103,11 +109,12 @@ export const signUpHandler = () => {
         }
     }
 
-    passInput1.oninput = (): void => {
+    passInput1.addEventListener('input', (): void => {
         userData.password_1 = passInput1.value;
-        checkFormValid();
         hideErrorMessage('required_hide', errorTagsIds.get('pass1'));
-    }
+        PasswordStrenght.checkPasswordInput(checkIsPasswordValid);
+        checkFormValid();
+    });
 
     passInput1.onblur = (): void => {
         if (!passInput1.value) {
@@ -176,7 +183,7 @@ export const signUpHandler = () => {
         const isFormValid: boolean = Object.values(userData).every(value => !!value);
         const isPasswordEqual: boolean = userData.password_1 === userData.password_2;
 
-        isFormValid && isPasswordEqual ?
+        isFormValid && isPasswordEqual && isPasswordValid ?
             signUpBtn.removeAttribute('disabled') : 
             signUpBtn.setAttribute('disabled', 'true');
         }

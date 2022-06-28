@@ -34,8 +34,36 @@
                 </div>
                 <div class="form-floating">
                     <input type="password" id="passInput1" class="form-control">
+
                     <p class="invalid-input-message" id="passInputError_1">Test text</p>
                     <label for="passInput1">Password</label>
+                </div>
+                <div id="password_strength">
+                    <div class="password-strength">
+                        <p class="password-strength__title">
+                            Your password should consist at list requirements below:
+                        </p>
+                        <div class="password-strength__state">
+                            <div class="password-strength__state__filler"></div>
+                        </div>
+                        <div class="password-strength__statuses">
+                            <p id="upper_case" class="password-strength__statuses__status">
+                                1 letter in Uppercase
+                            </p>
+                            <p id="lower_case" class="password-strength__statuses__status">
+                                1 letter in Lowercase
+                            </p>
+                            <p id="character" class="password-strength__statuses__status">
+                                1 special character
+                            </p>
+                            <p id="number" class="password-strength__statuses__status">
+                                1 number
+                            </p>
+                            <p id="length" class="password-strength__statuses__status">
+                                At list 8 symbols
+                            </p>
+                        </div>
+                    </div>                  
                 </div>
                 <div class="form-floating">
                     <input type="password" id="passInput2" class="form-control">
